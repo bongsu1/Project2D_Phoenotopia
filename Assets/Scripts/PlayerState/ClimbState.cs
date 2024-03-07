@@ -30,6 +30,7 @@ public class ClimbState : PlayerState
 
     public override void Exit()
     {
+        player.Animator.speed = 1f;
         player.Rigid.gravityScale = 1f;
     }
 
