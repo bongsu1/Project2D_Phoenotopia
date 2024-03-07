@@ -11,11 +11,6 @@ public class NormalState : PlayerState
 
     public override void Update()
     {
-        if (player.Input.actions["Attack"].IsPressed() && player.Input.actions["Attack"].triggered)
-        {
-            Attack();
-        }
-
         player.Animator.SetFloat("MoveSpeed", Mathf.Abs(player.Rigid.velocity.x));
 
         if (player.MoveDir.x != 0)
@@ -41,15 +36,15 @@ public class NormalState : PlayerState
         player.Rigid.velocity = new Vector2(player.Rigid.velocity.x, player.JumpSpeed);
     }
 
-    private void Attack()
-    {
-        player.Animator.Play("Attack");
-    }
-
     public override void Transition()
     {
+        // 공격키를 누르면 AttackState
+        if (player.Input.actions["Attack"].IsPressed() && player.Input.actions["Attack"].triggered)
+        {
+            ChangeState(Player.State.Attack);
+        }
         // 아래키를 누르고 있으면 DuckState
-        if (player.MoveDir.y < -0.1f)
+        else if (player.MoveDir.y < -0.1f)
         {
             ChangeState(Player.State.Duck);
         }
@@ -71,6 +66,11 @@ public class NormalState : PlayerState
         else if (player.IsLadder && player.MoveDir.y > 0f)
         {
             ChangeState(Player.State.Climb);
+        }
+        // 잡기키를 누르면 GrabState
+        else if (player.Input.actions["Grab"].IsPressed() && player.Input.actions["Grab"].triggered)
+        {
+            ChangeState(Player.State.Grab);
         }
     }
 

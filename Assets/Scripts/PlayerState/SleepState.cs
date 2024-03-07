@@ -3,27 +3,26 @@ using System.Collections.Generic;
 using System.Resources;
 using UnityEngine;
 
-// 계속 구현이 안되면 뺄예정
+// 계속 구현이 안되면 뺄예정 // 해결
 public class SleepState : PlayerState
 {
     public override void Enter()
     {
-        player.Input.actions["Move"].Disable();
         player.Animator.Play("Sleep");
+    }
+
+    public override void Update()
+    {
+        if (player.Input.actions["Jump"].IsPressed() && player.Input.actions["Jump"].triggered) // 코루틴 대신 애니메이션에서 ChangeState를 호출
+        {
+            player.Input.actions["Jump"].Disable();
+            player.Animator.Play("WakeUp");
+        }
     }
 
     public override void Exit()
     {
-        player.Animator.Play("WakeUp"); // 애니메이션이 재생되야 하는데 코루틴을 쓸수 없음
-        player.Input.actions["Move"].Enable();
-    }
-
-    public override void Transition()
-    {
-        if (player.Input.actions["Jump"].IsPressed() && player.Input.actions["Jump"].triggered)
-        {
-            ChangeState(Player.State.Normal);
-        }
+        player.Input.actions["Jump"].Enable();
     }
 
     public SleepState(Player player)

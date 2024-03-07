@@ -36,11 +36,15 @@ public class JumpState : PlayerState
 
     public override void Transition()
     {
-        if (player.IsGrounded)
+        if (player.Input.actions["Attack"].IsPressed() && player.Input.actions["Attack"].triggered)
+        {
+            ChangeState(Player.State.Attack);
+        }
+        else if (player.IsGrounded)
         {
             ChangeState(Player.State.Normal);
         }
-        if (player.IsLadder && player.MoveDir.y > 0f)
+        else if (player.IsLadder && player.MoveDir.y > 0f)
         {
             ChangeState(Player.State.Climb);
         }
