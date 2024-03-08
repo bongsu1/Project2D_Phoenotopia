@@ -17,6 +17,12 @@ public class NormalState : PlayerState
         {
             player.transform.localScale = new Vector3(player.MoveDir.x, 1, 1);
         }
+
+        if (player.OnDoor && !player.OnEnter && (player.MoveDir.y > 0.1f))
+        {
+            Debug.Log("Enter");
+            player.EnterDoor();
+        }
     }
 
     public override void FixedUpdate()
@@ -47,6 +53,11 @@ public class NormalState : PlayerState
         else if (player.OnNPC && player.Input.actions["Attack"].IsPressed() && player.Input.actions["Attack"].triggered)
         {
             ChangeState(Player.State.Talk);
+        }
+        // Use키를 누르면 UseState
+        else if (player.Input.actions["Use"].IsPressed() && player.Input.actions["Use"].triggered)
+        {
+            ChangeState(Player.State.Use);
         }
         // 아래키를 누르고 있으면 DuckState
         else if (player.MoveDir.y < -0.1f)

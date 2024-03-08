@@ -85,7 +85,7 @@ public class CarryState : PlayerState
     public override void Exit()
     {
         boxRigid.mass = 5f;
-        boxRender.sortingOrder = 1;
+        boxRender.sortingOrder = 2;
         player.Box.transform.parent = null;
         player.Box = null;
     }
