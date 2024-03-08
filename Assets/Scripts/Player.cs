@@ -1,12 +1,14 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    public enum State { Sleep, Normal, Jump, Duck, Climb, Attack, Charge, Grab, Carry }
+    public enum State { Sleep, Normal, Jump, Duck, Climb, Attack, Charge, Grab, Carry, Talk }
 
     private StateMachine<State> stateMachine = new StateMachine<State>();
 
@@ -14,49 +16,65 @@ public class Player : MonoBehaviour
     [SerializeField] Rigidbody2D rigid;
     [SerializeField] Animator animator;
     [SerializeField] PlayerInput input;
-    [SerializeField] BoxCollider2D playercoll;
-    [SerializeField] Transform attack;
-    [SerializeField] Transform grab;
+    [SerializeField] BoxCollider2D playercoll; // 숙이는 자세에서 콜라이더 사이즈를 줄이기 위해 BoxCollider2D가 필요
+    [SerializeField] Transform attackPoint; // 공격범위 위치
+    [SerializeField] Transform grabPoint; // 상자를 잡는 위치
+    [SerializeField] Transform talkPoint; // NPC 상호작용 포인트
 
     [Header("status")]
     [SerializeField] int damage;
     [SerializeField] int hp;
     [SerializeField] int stamina;
+
+    [Header("Normal")]
     [SerializeField] float walkSpeed;
     [SerializeField] float runSpeed;
     [SerializeField] float jumpSpeed;
+
+    [Header("State move speed")]
     [SerializeField] float duckMoveSpeed;
     [SerializeField] float climbMoveSpeed;
     [SerializeField] float ChargerMoveSpeed;
-    [SerializeField] float PushSpeed;
+    [SerializeField] float grabMoveSpeed;
+
+    [Header("Attack")]
+    [SerializeField] float normalAttackRange;
+    [SerializeField] float chargeAttackRange;
+    [SerializeField] float normalHitPower;
+    [SerializeField] float chargeHitPower;
+
+    [Header("Carry")]
+    [SerializeField] float grabRange;
+    [SerializeField] float throwPower;
 
     [Header("Physics")]
     [SerializeField] float accel;
     [SerializeField] float multiplier;
     [SerializeField] float lowJumpMultiplier;
     [SerializeField] float maxFall;
+
+    [Header("LayerMask")]
     [SerializeField] LayerMask groundLayer;
     [SerializeField] LayerMask platformLayer;
     [SerializeField] LayerMask LadderLayer;
-    [SerializeField] float normalAttackRange;
-    [SerializeField] float chargeAttackRange;
     [SerializeField] LayerMask damagableLayer;
-    [SerializeField] float hitPower;
-    [SerializeField] float grabRange;
     [SerializeField] LayerMask grabbableLayer;
-    [SerializeField] Vector2 carryOffset;
-    [SerializeField] float throwPower;
+    [SerializeField] LayerMask npcLayer;
+    [SerializeField] Vector2 talkBoxSize;
 
     Vector2 moveDir;
     private float moveSpeed;
+    private float chargeTime;
+    private float attackRange;
+    private float hitPower;
     private int groundCount;
     private int ladderCount;
     private bool isGrounded;
     private bool isDucking;
     private bool isLadder;
+    private bool onNPC;
+    private bool onTalk;
     Collider2D platformcoll;
-    private float chargeTime;
-    private float attackRange;
     Box box;
 
     // Property
@@ -73,10 +91,13 @@ public class Player : MonoBehaviour
     public float ClimbMoveSpeed => climbMoveSpeed;
     public float ChargeTime { get { return chargeTime; } set { chargeTime = value; } }
     public float ThrowPower => throwPower;
+    public float HitPower => hitPower;
 
     public bool IsGrounded => isGrounded;
     public bool IsDucking => isDucking;
     public bool IsLadder => isLadder;
+    public bool OnNPC => onNPC;
+    public bool OnTalk {get { return onTalk; } set { onTalk = value; } }
 
     private void Start()
     {
@@ -89,6 +110,7 @@ public class Player : MonoBehaviour
         stateMachine.AddState(State.Charge, new ChargeState(this));
         stateMachine.AddState(State.Grab, new GrabState(this));
         stateMachine.AddState(State.Carry, new CarryState(this));
+        stateMachine.AddState(State.Talk, new TalkState(this));
 
         //stateMachine.Start(State.Sleep); // Sleep으로 시작
         stateMachine.Start(State.Normal);
@@ -113,7 +135,7 @@ public class Player : MonoBehaviour
         // 물건을 밀거나 끌때는 느려지게
         else if (input.actions["Grab"].IsPressed() && box != null)
         {
-            moveSpeed = PushSpeed;
+            moveSpeed = grabMoveSpeed;
         }
         // "Run"키를 누르고 움직이면 달리기
         else if (input.actions["Run"].IsPressed())
@@ -125,6 +147,7 @@ public class Player : MonoBehaviour
             moveSpeed = walkSpeed;
         }
 
+        hitPower = chargeTime > 1f ? chargeHitPower : normalHitPower;
         attackRange = chargeTime > 1f ? chargeAttackRange : normalAttackRange;
 
         stateMachine.Update();
@@ -154,7 +177,7 @@ public class Player : MonoBehaviour
     Collider2D[] colliders = new Collider2D[10];
     public void Attack()
     {
-        int size = Physics2D.OverlapCircleNonAlloc(attack.position, attackRange, colliders, damagableLayer);
+        int size = Physics2D.OverlapCircleNonAlloc(attackPoint.position, attackRange, colliders, damagableLayer);
         for (int i = 0; i < size; i++)
         {
             IDamagable damagable = colliders[i].GetComponent<IDamagable>();
@@ -173,11 +196,22 @@ public class Player : MonoBehaviour
 
     public void Grab()
     {
-        int size = Physics2D.OverlapCircleNonAlloc(grab.position, grabRange, colliders, grabbableLayer);
+        int size = Physics2D.OverlapCircleNonAlloc(grabPoint.position, grabRange, colliders, grabbableLayer);
         if (size > 0)
         {
             colliders[0].transform.SetParent(transform);
             box = colliders[0].GetComponent<Box>();
+        }
+    }
+
+    public void Talk()
+    {
+        int size = Physics2D.OverlapBoxNonAlloc(talkPoint.position, talkBoxSize, 0, colliders, npcLayer);
+        if (size > 0)
+        {
+            onTalk = true;
+            IInteractable npc = colliders[0].GetComponent<IInteractable>();
+            npc.Interact(this);
         }
     }
 
@@ -197,10 +231,13 @@ public class Player : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(attack.position, attackRange);
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
 
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(grab.position, grabRange);
+        Gizmos.DrawWireSphere(grabPoint.position, grabRange);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(talkPoint.position, talkBoxSize);
     }
 
     private void OnMove(InputValue value)
@@ -210,7 +247,7 @@ public class Player : MonoBehaviour
 
     private void OnJump(InputValue value)
     {
-        if (isDucking)
+        if (isDucking && platformcoll)
         {
             StartCoroutine(DownJumpRoutine());
         }
@@ -237,6 +274,10 @@ public class Player : MonoBehaviour
         {
             ladderCount++;
         }
+        else if (((1 << collision.gameObject.layer) & npcLayer) != 0)
+        {
+            onNPC = true;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -248,6 +289,10 @@ public class Player : MonoBehaviour
         else if (((1 << collision.gameObject.layer) & LadderLayer) != 0)
         {
             ladderCount--;
+        }
+        else if (((1 << collision.gameObject.layer) & npcLayer) != 0)
+        {
+            onNPC = false;
         }
     }
 }

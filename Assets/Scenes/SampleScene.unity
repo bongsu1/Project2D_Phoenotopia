@@ -531,8 +531,9 @@ MonoBehaviour:
   animator: {fileID: 506361495}
   input: {fileID: 506361496}
   playercoll: {fileID: 506361498}
-  attack: {fileID: 1097943327}
-  grab: {fileID: 2098598832}
+  attackPoint: {fileID: 1097943327}
+  grabPoint: {fileID: 2098598832}
+  talkPoint: {fileID: 1403319157}
   damage: 1
   hp: 30
   stamina: 10
@@ -542,7 +543,13 @@ MonoBehaviour:
   duckMoveSpeed: 2
   climbMoveSpeed: 2
   ChargerMoveSpeed: 2
-  PushSpeed: 2
+  grabMoveSpeed: 2
+  normalAttackRange: 0.4
+  chargeAttackRange: 0.45
+  normalHitPower: 15
+  chargeHitPower: 30
+  grabRange: 0.3
+  throwPower: 2
   accel: 10
   multiplier: 2.5
   lowJumpMultiplier: 2
@@ -556,18 +563,16 @@ MonoBehaviour:
   LadderLayer:
     serializedVersion: 2
     m_Bits: 256
-  normalAttackRange: 0.4
-  chargeAttackRange: 0.45
   damagableLayer:
     serializedVersion: 2
     m_Bits: 512
-  hitPower: 3
-  grabRange: 0.3
   grabbableLayer:
     serializedVersion: 2
     m_Bits: 512
-  carryOffset: {x: 0.5, y: 0.4}
-  throwPower: 2
+  npcLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  talkBoxSize: {x: 0.43, y: 0.78}
 --- !u!95 &506361495
 Animator:
   serializedVersion: 5
@@ -752,7 +757,7 @@ Transform:
   m_GameObject: {fileID: 506361493}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.288, y: -3.814, z: 0}
+  m_LocalPosition: {x: -4.382, y: -3.863, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -760,6 +765,7 @@ Transform:
   - {fileID: 1400680188}
   - {fileID: 1097943327}
   - {fileID: 2098598832}
+  - {fileID: 1403319157}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
@@ -849,7 +855,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.288, y: -0.8140001, z: -10}
+  m_LocalPosition: {x: -4.382, y: -0.86300015, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -954,7 +960,7 @@ Transform:
   m_GameObject: {fileID: 588350722}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.288, y: -0.8140001, z: -10}
+  m_LocalPosition: {x: -4.382, y: -0.86300015, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1743,6 +1749,37 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.4, y: 0.2}
   m_EdgeRadius: 0
+--- !u!1 &1403319156
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1403319157}
+  m_Layer: 3
+  m_Name: NPCCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1403319157
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1403319156}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.4, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 506361500}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1480286763
 GameObject:
   m_ObjectHideFlags: 0
@@ -1884,6 +1921,8 @@ GameObject:
   - component: {fileID: 1958998368}
   - component: {fileID: 1958998367}
   - component: {fileID: 1958998366}
+  - component: {fileID: 1958998369}
+  - component: {fileID: 1958998370}
   m_Layer: 10
   m_Name: NPC
   m_TagString: Untagged
@@ -1923,10 +1962,10 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.45}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0}
     oldSize: {x: 0.53125, y: 0.90625}
     newSize: {x: 0.53125, y: 0.90625}
     adaptiveTilingThreshold: 0.5
@@ -1934,7 +1973,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.53125, y: 0.90625}
+  m_Size: {x: 0.6, y: 0.9}
   m_EdgeRadius: 0
 --- !u!212 &1958998367
 SpriteRenderer:
@@ -1997,12 +2036,46 @@ Transform:
   m_GameObject: {fileID: 1958998365}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.258, y: -3.424, z: 0}
+  m_LocalPosition: {x: -5.205, y: -3.872, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1958998369
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1958998365}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 22100000, guid: 00a4d5502fa3f9543af0470ba8c5fd20, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1958998370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1958998365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac4fdc9ef0b47fc4a8fb984244d63778, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1958998369}
 --- !u!1 &2098598831
 GameObject:
   m_ObjectHideFlags: 0

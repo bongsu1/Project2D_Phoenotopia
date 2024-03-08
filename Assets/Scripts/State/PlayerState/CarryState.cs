@@ -69,7 +69,7 @@ public class CarryState : PlayerState
 
         if (player.Input.actions["Attack"].IsPressed() && player.Input.actions["Attack"].triggered)
         {
-            boxRigid.mass = 1f;
+            boxRigid.mass = 5f;
             player.Box.transform.parent = null;
             boxRigid.velocity = new Vector2(player.transform.localScale.x * player.ThrowPower * 2, player.ThrowPower);
             player.Animator.Play("BoxThrow");
@@ -84,7 +84,7 @@ public class CarryState : PlayerState
 
     public override void Exit()
     {
-        boxRigid.mass = 1f;
+        boxRigid.mass = 5f;
         boxRender.sortingOrder = 1;
         player.Box.transform.parent = null;
         player.Box = null;

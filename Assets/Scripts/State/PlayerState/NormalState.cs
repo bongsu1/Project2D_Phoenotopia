@@ -39,9 +39,14 @@ public class NormalState : PlayerState
     public override void Transition()
     {
         // 공격키를 누르면 AttackState
-        if (player.Input.actions["Attack"].IsPressed() && player.Input.actions["Attack"].triggered)
+        if (!player.OnNPC && player.Input.actions["Attack"].IsPressed() && player.Input.actions["Attack"].triggered)
         {
             ChangeState(Player.State.Attack);
+        }
+        // NPC앞에서 공격키를 누르면 TalkState
+        else if (player.OnNPC && player.Input.actions["Attack"].IsPressed() && player.Input.actions["Attack"].triggered)
+        {
+            ChangeState(Player.State.Talk);
         }
         // 아래키를 누르고 있으면 DuckState
         else if (player.MoveDir.y < -0.1f)

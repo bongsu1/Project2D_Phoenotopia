@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: NPC_Scientist
+  m_Controller: {fileID: 9100000, guid: cdb18f2671ca8b34b9babab805d5a967, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: b4af304f29d9e0e499b31055ad47b425, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: b4af304f29d9e0e499b31055ad47b425, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: cace65f70b3e9414286571fac6f1afe1, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: cace65f70b3e9414286571fac6f1afe1, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 5f5e19511a84cf44e870bc778e547e93, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 5f5e19511a84cf44e870bc778e547e93, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: b469f6d0f6f762d43857fd3a35e8dfee, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: b469f6d0f6f762d43857fd3a35e8dfee, type: 2}
