@@ -55,7 +55,7 @@ public class NormalState : PlayerState
             ChangeState(Player.State.Talk);
         }
         // Use키를 누르면 UseState
-        else if (player.Input.actions["Use"].IsPressed() && player.Input.actions["Use"].triggered)
+        else if (player.Input.actions["Use"].IsPressed() && player.Input.actions["Use"].triggered)// +아이템을 장착하고 있으면
         {
             ChangeState(Player.State.Use);
         }

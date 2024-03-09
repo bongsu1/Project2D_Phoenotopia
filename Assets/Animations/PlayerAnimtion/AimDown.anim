@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SlingShot
+  m_Name: AimDown
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,18 +21,10 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 21300000, guid: 4b7ba90ec12dfb64d99268ed67446c7d, type: 3}
-    - time: 0.083333336
-      value: {fileID: 21300000, guid: 682cc141b9844dc41a838b35ac70d0d9, type: 3}
-    - time: 0.16666667
-      value: {fileID: 21300000, guid: a48973f934b924849bfba614fdfe2d44, type: 3}
-    - time: 0.25
-      value: {fileID: 21300000, guid: aa524c98b1290cb46b083f900d7e2662, type: 3}
-    - time: 0.33333334
       value: {fileID: 21300000, guid: 285dad4f665dfeb479f1b9d1aaf6a7ab, type: 3}
-    - time: 0.5
+    - time: 0.25
       value: {fileID: 21300000, guid: 31c172b3bcda2cb4d8917f71bfe8afa6, type: 3}
-    - time: 0.6666667
+    - time: 0.5
       value: {fileID: 21300000, guid: e997dc1a571199442a337810167f8e96, type: 3}
     attribute: m_Sprite
     path: 
@@ -56,10 +48,6 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 4b7ba90ec12dfb64d99268ed67446c7d, type: 3}
-    - {fileID: 21300000, guid: 682cc141b9844dc41a838b35ac70d0d9, type: 3}
-    - {fileID: 21300000, guid: a48973f934b924849bfba614fdfe2d44, type: 3}
-    - {fileID: 21300000, guid: aa524c98b1290cb46b083f900d7e2662, type: 3}
     - {fileID: 21300000, guid: 285dad4f665dfeb479f1b9d1aaf6a7ab, type: 3}
     - {fileID: 21300000, guid: 31c172b3bcda2cb4d8917f71bfe8afa6, type: 3}
     - {fileID: 21300000, guid: e997dc1a571199442a337810167f8e96, type: 3}
@@ -68,7 +56,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.75
+    m_StopTime: 0.5833333
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0

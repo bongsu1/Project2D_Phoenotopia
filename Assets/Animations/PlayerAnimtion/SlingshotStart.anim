@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SlingshotEnd
+  m_Name: SlingshotStart
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,9 +21,13 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 21300000, guid: 01eb61998ab58c64ba8c87d28854bead, type: 3}
+      value: {fileID: 21300000, guid: 4b7ba90ec12dfb64d99268ed67446c7d, type: 3}
     - time: 0.083333336
-      value: {fileID: 21300000, guid: 7fc120ebc13acd04bbf733f8c874ffa8, type: 3}
+      value: {fileID: 21300000, guid: 682cc141b9844dc41a838b35ac70d0d9, type: 3}
+    - time: 0.16666667
+      value: {fileID: 21300000, guid: a48973f934b924849bfba614fdfe2d44, type: 3}
+    - time: 0.25
+      value: {fileID: 21300000, guid: aa524c98b1290cb46b083f900d7e2662, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -46,14 +50,16 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 01eb61998ab58c64ba8c87d28854bead, type: 3}
-    - {fileID: 21300000, guid: 7fc120ebc13acd04bbf733f8c874ffa8, type: 3}
+    - {fileID: 21300000, guid: 4b7ba90ec12dfb64d99268ed67446c7d, type: 3}
+    - {fileID: 21300000, guid: 682cc141b9844dc41a838b35ac70d0d9, type: 3}
+    - {fileID: 21300000, guid: a48973f934b924849bfba614fdfe2d44, type: 3}
+    - {fileID: 21300000, guid: aa524c98b1290cb46b083f900d7e2662, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.16666667
+    m_StopTime: 0.33333334
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -72,11 +78,4 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events:
-  - time: 0.16666667
-    functionName: ToNormalState
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
+  m_Events: []

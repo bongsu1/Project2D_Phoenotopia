@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -19,7 +20,7 @@ public class Player : MonoBehaviour
     [SerializeField] Transform attackPoint; // 공격범위 위치
     [SerializeField] Transform grabPoint; // 상자를 잡는 위치
     [SerializeField] Transform interactPoint; // NPC 상호작용 포인트
-    [SerializeField] Transform slingShotAim;
+    [SerializeField] Transform slingshotAim;
 
     [Header("status")]
     [SerializeField] int damage;
@@ -47,6 +48,10 @@ public class Player : MonoBehaviour
     [SerializeField] float grabRange;
     [SerializeField] float throwPower;
 
+    [Header("Use")]
+    [SerializeField] float aimSpeed;
+    [SerializeField] float slingshotPower;
+
     [Header("Physics")]
     [SerializeField] float accel;
     [SerializeField] float multiplier;
@@ -63,8 +68,8 @@ public class Player : MonoBehaviour
     [SerializeField] Vector2 interactBoxSize;
     [SerializeField] LayerMask doorLayer;
 
-    //test
-    public float useTime;
+    [Header("Prefab")]
+    [SerializeField] Bullet slingshotBullet;
 
     Vector2 moveDir;
     private float moveSpeed;
@@ -72,7 +77,6 @@ public class Player : MonoBehaviour
     private float attackRange;
     private float hitPower;
     private float doorXPosition;
-    private float aimRotateAngle;
     private int groundCount;
     private int ladderCount;
     private bool isGrounded;
@@ -92,6 +96,7 @@ public class Player : MonoBehaviour
     public Rigidbody2D Rigid => rigid;
     public BoxCollider2D PlayerColl => playercoll;
     public Box Box { get { return box; } set { box = value; } }
+    public Transform SlingshotAim => slingshotAim;
 
     public float Accel => accel;
     public float JumpSpeed => jumpSpeed;
@@ -100,7 +105,7 @@ public class Player : MonoBehaviour
     public float ChargeTime { get { return chargeTime; } set { chargeTime = value; } }
     public float ThrowPower => throwPower;
     public float HitPower => hitPower;
-    public float AimRotateAngle { get { return aimRotateAngle; } set { aimRotateAngle = value; } }
+    public float AimSpeed => aimSpeed;
 
     public bool IsGrounded => isGrounded;
     public bool IsDucking => isDucking;
@@ -303,7 +308,14 @@ public class Player : MonoBehaviour
         Gizmos.DrawWireCube(interactPoint.position, interactBoxSize);
     }
 
-    //
+    // 새총외에 쏘는것을 더 만들면 총알들을 스크립터블오브젝트로 만든뒤에 그걸 불러와서 쏘는것을 구현
+    public void Shot()
+    {
+        Vector2 shotDir = transform.localScale.x > 0 ? slingshotAim.right : -slingshotAim.right;
+        Rigidbody2D bullet = Instantiate(slingshotBullet, slingshotAim.position, slingshotAim.rotation).GetComponent<Rigidbody2D>();
+        bullet.velocity = shotDir * slingshotPower;
+    }
+
     private void OnMove(InputValue value)
     {
         moveDir = value.Get<Vector2>();
