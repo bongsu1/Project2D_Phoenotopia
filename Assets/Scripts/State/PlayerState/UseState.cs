@@ -14,26 +14,26 @@ public class UseState : PlayerState
 
     public override void Enter()
     {
-        bottomTurnPoint = Quaternion.Euler(0f, 0f, -15f);
+        bottomTurnPoint = Quaternion.Euler(0f, 0f, -40f);
         topTurnPoint = Quaternion.Euler(0f, 0f, 50f);
 
         player.Animator.Play("SlingshotStart");
         player.Rigid.velocity = Vector3.zero;
 
         aim = player.SlingshotAim;
-        aim.rotation = Quaternion.Euler(0f ,0f ,0f);
-        rotateDir = -1f;
-        //aim.gameObject.SetActive(true);
+        aim.localRotation = Quaternion.Euler(0f, 0f, -39f);
+        rotateDir = -0.1f;
+        aim.gameObject.SetActive(true);
     }
 
     public override void Update()
     {
-        if (aim.rotation.z < bottomTurnPoint.z)
+        if (aim.localRotation.z < bottomTurnPoint.z)
         {
             player.Animator.Play("AimUp");
             rotateDir = 1f;   
         }
-        else if (aim.rotation.z > topTurnPoint.z)
+        else if (aim.localRotation.z > topTurnPoint.z)
         {
             player.Animator.Play("AimDown");
             rotateDir = -1f;
@@ -50,7 +50,15 @@ public class UseState : PlayerState
 
     public override void Exit()
     {
-        //aim.gameObject.SetActive(false);
+        aim.gameObject.SetActive(false);
+    }
+
+    public override void Transition()
+    {
+        if (player.Input.actions["Jump"].IsPressed() && player.Input.actions["Jump"].triggered)
+        {
+            ChangeState(Player.State.Normal);
+        }
     }
 
     public UseState(Player player)
