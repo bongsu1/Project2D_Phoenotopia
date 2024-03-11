@@ -1,27 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class NPC : MonoBehaviour, IInteractable
 {
     public enum State { Idle, Talk, Walk, Action }
 
-    private State state;
+    private State curState;
 
     [SerializeField] Animator animator;
+    [SerializeField] Rigidbody2D rigid;
+    [SerializeField] Transform[] checkPoint;
+    [SerializeField] float idleTime;
 
     private Player player;
     private Coroutine talkRoutine;
+    private Coroutine idleRoutine;
+
     WaitUntil waitUntil;
+    WaitForSeconds waitIdle;
+
+    Transform dirPoint;
+    private int index;
 
     private void Start()
     {
-        state = State.Idle;
+        index = 0;
+        waitIdle = new WaitForSeconds(idleTime);
+        dirPoint = checkPoint.Length > 1 ? checkPoint[index] : null;
+        curState = State.Idle;
     }
 
     private void Update()
     {
-        switch (state)
+        switch (curState)
         {
             case State.Idle:
                 IdleUpdate();
@@ -30,6 +43,7 @@ public class NPC : MonoBehaviour, IInteractable
                 TalkUpdate();
                 break;
             case State.Walk:
+                WalkUpdate();
                 break;
             case State.Action:
                 break;
@@ -39,14 +53,37 @@ public class NPC : MonoBehaviour, IInteractable
     private void IdleUpdate()
     {
         animator.Play("Idle");
+
+        // 움직이지 않는 NPC는 계속 Idle 상태
+        if (checkPoint.Length > 1 && idleRoutine == null)
+        {
+            idleRoutine = StartCoroutine(IdleRoutine());
+        }
     }
-    
+
     private void TalkUpdate()
     {
         animator.Play("Talk");
-        if (player.Input.actions["Jump"].IsPressed() && player.Input.actions["Jump"].triggered)
+    }
+
+    private void WalkUpdate()
+    {
+        animator.Play("Walk");
+
+        float direction = Mathf.Sign(dirPoint.position.x - transform.position.x);
+        transform.localScale = new Vector3(direction, 1f, 1f);
+
+        rigid.velocity = new Vector2(direction, rigid.velocity.y);
+
+        if (dirPoint == checkPoint[index] && Mathf.Abs(checkPoint[index].position.x - transform.position.x) < 0.1f)
         {
-            StopTalkRoutine();
+            index++;
+            if (index == checkPoint.Length)
+            {
+                index = 0;
+            }
+            dirPoint = checkPoint[index];
+            curState = State.Idle;
         }
     }
 
@@ -62,13 +99,14 @@ public class NPC : MonoBehaviour, IInteractable
 
     private void Talk()
     {
+        StopIdleRoutine();
         talkRoutine = StartCoroutine(TalkRoutine());
     }
 
     IEnumerator TalkRoutine()
     {
         // test
-        state = State.Talk;
+        curState = State.Talk;
         yield return waitUntil;
         Debug.Log("Talk 1");
         yield return new WaitForSeconds(.1f);
@@ -85,15 +123,22 @@ public class NPC : MonoBehaviour, IInteractable
         talkRoutine = null;
         player.OnTalk = false;
         player = null;
-        state = State.Idle;
+        curState = State.Idle;
     }
 
-    private void StopTalkRoutine()
+    IEnumerator IdleRoutine()
     {
-        StopCoroutine(talkRoutine);
-        talkRoutine = null;
-        player.OnTalk = false;
-        player = null;
-        state = State.Idle;
+        yield return waitIdle;
+        curState = State.Walk;
+        idleRoutine = null;
+    }
+
+    private void StopIdleRoutine()
+    {
+        if (idleRoutine != null)
+        {
+            StopCoroutine(idleRoutine);
+            idleRoutine = null;
+        }
     }
 }

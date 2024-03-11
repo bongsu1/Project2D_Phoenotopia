@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: AimDown
+  m_Name: Toad_Hit
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,11 +21,7 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 21300000, guid: 285dad4f665dfeb479f1b9d1aaf6a7ab, type: 3}
-    - time: 0.33333334
-      value: {fileID: 21300000, guid: 31c172b3bcda2cb4d8917f71bfe8afa6, type: 3}
-    - time: 0.6666667
-      value: {fileID: 21300000, guid: e997dc1a571199442a337810167f8e96, type: 3}
+      value: {fileID: 21300000, guid: 826681d85671f254a819e20d56920e5d, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -48,15 +44,13 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: 21300000, guid: 285dad4f665dfeb479f1b9d1aaf6a7ab, type: 3}
-    - {fileID: 21300000, guid: 31c172b3bcda2cb4d8917f71bfe8afa6, type: 3}
-    - {fileID: 21300000, guid: e997dc1a571199442a337810167f8e96, type: 3}
+    - {fileID: 21300000, guid: 826681d85671f254a819e20d56920e5d, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.75
+    m_StopTime: 0.083333336
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
