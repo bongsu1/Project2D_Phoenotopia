@@ -20,7 +20,6 @@ public class NormalState : PlayerState
 
         if (player.OnDoor && !player.OnEnter && (player.MoveDir.y > 0.1f))
         {
-            Debug.Log("Enter");
             player.EnterDoor();
         }
     }

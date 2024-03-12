@@ -19,6 +19,7 @@ public class Toad : Enemy // 개구리 몬스터
     private WaitForSeconds holdWait;
     private bool onAttack;
     private bool onHit;
+    
 
     private void Start()
     {
@@ -69,7 +70,7 @@ public class Toad : Enemy // 개구리 몬스터
     {
         while (true)
         {
-            yield return attackWait;
+            yield return AttackCount > 0 ? null : attackWait;
             animator.Play("Hold");
             yield return holdWait;
             Jump(player.transform.position);
@@ -102,6 +103,9 @@ public class Toad : Enemy // 개구리 몬스터
 
     public void ToAttackState()
     {
+        if (attackRoutine != null)
+            return;
+
         stateMachine.ChangeState(State.Attack);
     }
 

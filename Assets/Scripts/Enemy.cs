@@ -13,12 +13,17 @@ public class Enemy : MonoBehaviour, IDamagable
 
     protected Player player;
     protected bool onPlayerCheck;
+    private int attackCount = 1;
 
+    
     // property
     public Animator Animator => animator;
     public Rigidbody2D Rigid => rigid;
     public Player Player => player;
     public bool OnPlayerCheck { get { return onPlayerCheck; } set { onPlayerCheck = value; } }
+    public int AttackCount { get { return attackCount; } set { attackCount = value; } }
+    public float CheckSize => checkSize;
+    public LayerMask PlayerLayer => playerLayer;
 
     public virtual void TakeDamage(int damage)
     {

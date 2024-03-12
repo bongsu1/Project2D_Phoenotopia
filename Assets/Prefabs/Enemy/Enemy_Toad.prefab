@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 3136154902255721095}
   - component: {fileID: 4575174773266791979}
-  - component: {fileID: 5478537343017782986}
+  - component: {fileID: 136457649344100290}
   - component: {fileID: 1599713990035321838}
   - component: {fileID: 564246679486495411}
   - component: {fileID: 2078617533896668052}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Enemy_Toad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: b32bc52445655c848b88b3f2451331ec, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -89,8 +89,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &5478537343017782986
-BoxCollider2D:
+--- !u!58 &136457649344100290
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -111,7 +111,7 @@ BoxCollider2D:
     m_Bits: 8183
   m_ForceReceiveLayers:
     serializedVersion: 2
-    m_Bits: 8183
+    m_Bits: 4087
   m_ContactCaptureLayers:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -121,19 +121,9 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.65625, y: 0.5}
-    newSize: {x: 0.65625, y: 0.5}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Offset: {x: 0, y: 0.26}
   serializedVersion: 2
-  m_Size: {x: 0.65625, y: 0.5}
-  m_EdgeRadius: 0
+  m_Radius: 0.2588958
 --- !u!50 &1599713990035321838
 Rigidbody2D:
   serializedVersion: 4
@@ -197,7 +187,7 @@ MonoBehaviour:
   animator: {fileID: 564246679486495411}
   rigid: {fileID: 1599713990035321838}
   playerCheck: {fileID: 1313769298221376783}
-  hp: 15
+  hp: 5
   checkSize: 2
   playerLayer:
     serializedVersion: 2
@@ -207,6 +197,7 @@ MonoBehaviour:
   jumpPower: 3
   maxjumpDistance: 4
   jumpMultiplier: 1.5
+  dieTime: 3
 --- !u!1 &8098110686484763038
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,7 +208,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6549553138747929787}
   - component: {fileID: 1313769298221376783}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: PlayerCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}

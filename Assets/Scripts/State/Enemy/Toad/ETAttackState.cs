@@ -7,6 +7,7 @@ public class ETAttackState : ToadState
     public override void Enter()
     {
         toad.StartAttackRoutine();
+        toad.AttackCount--;
     }
 
     public override void Update()

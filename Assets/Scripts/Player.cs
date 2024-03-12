@@ -215,7 +215,7 @@ public class Player : MonoBehaviour
                 Rigidbody2D other = colliders[i].GetComponent<Rigidbody2D>();
                 if (other != null)
                 {
-                    Vector2 hitDir = new Vector2(other.position.x - transform.position.x, other.position.y - transform.position.y).normalized;
+                    Vector2 hitDir = new Vector2(transform.localScale.x , attackRange).normalized;
                     other.velocity = hitDir * hitPower;
                 }
                 damagable.TakeDamage(damage);
