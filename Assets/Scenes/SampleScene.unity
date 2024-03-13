@@ -2696,10 +2696,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2773529919050077908, guid: 011d9d599943f534c8375288c8d55d33, type: 3}
-      propertyPath: doorColl
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 2773529919050077908, guid: 011d9d599943f534c8375288c8d55d33, type: 3}
       propertyPath: exitPoint
       value: 
       objectReference: {fileID: 999627183}

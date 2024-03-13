@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class Door : MonoBehaviour, IEnterable
 {
+    public UnityEvent OnEnter;
+
     [SerializeField] Animator animator;
     [SerializeField] BoxCollider2D doorColl;
     [SerializeField] Transform exitPoint;
@@ -35,6 +38,7 @@ public class Door : MonoBehaviour, IEnterable
 
         player.Animator.Play("EnterDoor");
         player.Rigid.velocity = Vector2.zero;
+        OnEnter?.Invoke();
 
         // 나오는 문이 있고 그 문이 안열려있으면 열기
         if (exitDoor != null)

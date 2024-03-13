@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
@@ -86,6 +87,7 @@ public class Player : MonoBehaviour
     private bool onTalk;
     private bool onDoor;
     private bool onEnter;
+    private bool onExit;
     Collider2D platformcoll;
     Box box;
 
@@ -137,6 +139,9 @@ public class Player : MonoBehaviour
     {
         if (onEnter)
         {
+            if (onExit)
+                return;
+
             xPosition = Mathf.Lerp(transform.position.x, doorXPosition, 0.1f);
             transform.position = new Vector2(xPosition, transform.position.y);
             return;
@@ -276,11 +281,17 @@ public class Player : MonoBehaviour
         onEnter = true;
     }
 
+    public void OnExit()
+    {
+        onExit = true;
+    }
+
     public void IsExit()
     {
         onDoor = true;
         onEnter = false;
         door = null;
+        onExit = false;
     }
 
     // 공격 애니메이션이 끝나는 지점에서 애니메이션 이벤트로 호출
@@ -332,7 +343,7 @@ public class Player : MonoBehaviour
     IEnumerator DownJumpRoutine()
     {
         Physics2D.IgnoreCollision(playercoll, platformcoll);
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.15f);
         Physics2D.IgnoreCollision(playercoll, platformcoll, false);
     }
 
