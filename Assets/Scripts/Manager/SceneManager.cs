@@ -8,6 +8,7 @@ public class SceneManager : Singleton<SceneManager>
     [SerializeField] Image fade;
     [SerializeField] Slider loadingBar;
     [SerializeField] float fadeTime;
+    [SerializeField] int exitPoint; // 전 씬에서 나온 지점 다음 씬에 전달용
 
     private BaseScene curScene;
 
@@ -44,6 +45,9 @@ public class SceneManager : Singleton<SceneManager>
         Manager.UI.ClearWindowUI();
         Manager.UI.CloseInGameUI();
 
+        // 나온지점 저장
+        exitPoint = GetCurScene().ExitPoint;
+
         Time.timeScale = 0f;
         loadingBar.gameObject.SetActive(true);
 
@@ -57,6 +61,8 @@ public class SceneManager : Singleton<SceneManager>
         Manager.UI.EnsureEventSystem();
 
         BaseScene curScene = GetCurScene();
+        // 나온지점 전달
+        curScene.ExitPoint = exitPoint;
         yield return curScene.LoadingRoutine();
 
         loadingBar.gameObject.SetActive(false);

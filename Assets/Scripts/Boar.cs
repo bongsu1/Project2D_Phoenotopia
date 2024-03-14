@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Boar : Enemy
@@ -37,6 +35,12 @@ public class Boar : Enemy
 
     private void Start()
     {
+        for (int i = 0; i < patrolPoint.Length; i++)
+        {
+            float randomPoint = Random.Range(2f, 5f) * (i % 2 == 0 ? 1 : -1);
+            patrolPoint[i].localPosition = new Vector2(randomPoint, 0);
+        }
+
         holdWait = new WaitForSeconds(holdTime);
         attackWait = new WaitForSeconds(attackCool);
         playerCheck.radius = checkSize;
@@ -174,6 +178,6 @@ public class Boar : Enemy
 
     public void DestroyGameObject()
     {
-        Destroy(gameObject, dieTime);
+        Destroy(transform.parent.gameObject, dieTime);
     }
 }

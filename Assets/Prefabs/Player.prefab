@@ -93,7 +93,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2989423208325761328}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 15.21, y: -10.44, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -315,7 +315,7 @@ MonoBehaviour:
   chargeAttackRange: 0.45
   normalHitPower: 5
   chargeHitPower: 10
-  grabRange: 0.3
+  grabRange: 0.25
   throwPower: 2
   aimSpeed: 40
   slingshotPower: 10
@@ -346,6 +346,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   slingshotBullet: {fileID: 1761702067083817779, guid: 810110a661397cf40b04fb1c8274c310, type: 3}
+  isStart: 1
 --- !u!1 &5390923645235274957
 GameObject:
   m_ObjectHideFlags: 0

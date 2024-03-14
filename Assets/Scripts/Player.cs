@@ -10,7 +10,6 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     public enum State { Sleep, Normal, Jump, Duck, Climb, Attack, Charge, Grab, Carry, Talk, Use }
-
     private StateMachine<State> stateMachine = new StateMachine<State>();
 
     [Header("Component")]
@@ -88,6 +87,7 @@ public class Player : MonoBehaviour
     private bool onDoor;
     private bool onEnter;
     private bool onExit;
+    public bool isStart; // test.. public
     Collider2D platformcoll;
     Box box;
 
@@ -116,6 +116,7 @@ public class Player : MonoBehaviour
     public bool OnTalk { get { return onTalk; } set { onTalk = value; } }
     public bool OnDoor => onDoor;
     public bool OnEnter => onEnter;
+    public bool IsStart { get { return isStart; } set { isStart = value; } }
 
     private void Start()
     {
@@ -131,7 +132,6 @@ public class Player : MonoBehaviour
         stateMachine.AddState(State.Talk, new TalkState(this));
         stateMachine.AddState(State.Use, new UseState(this));
 
-        //stateMachine.Start(State.Sleep); // Sleep으로 시작
         stateMachine.Start(State.Normal);
     }
 
@@ -220,7 +220,7 @@ public class Player : MonoBehaviour
                 Rigidbody2D other = colliders[i].GetComponent<Rigidbody2D>();
                 if (other != null)
                 {
-                    Vector2 hitDir = new Vector2(transform.localScale.x , attackRange).normalized;
+                    Vector2 hitDir = new Vector2(transform.localScale.x, attackRange).normalized;
                     other.velocity = hitDir * hitPower;
                 }
                 damagable.TakeDamage(damage);
@@ -274,16 +274,12 @@ public class Player : MonoBehaviour
     public void ExitDoor()
     {
         door.Exit(this);
+        onExit = true;
     }
 
     public void IsEnter()
     {
         onEnter = true;
-    }
-
-    public void OnExit()
-    {
-        onExit = true;
     }
 
     public void IsExit()
@@ -292,6 +288,11 @@ public class Player : MonoBehaviour
         onEnter = false;
         door = null;
         onExit = false;
+    }
+
+    public void StartGame()
+    {
+        stateMachine.ChangeState(State.Sleep);
     }
 
     // 공격 애니메이션이 끝나는 지점에서 애니메이션 이벤트로 호출

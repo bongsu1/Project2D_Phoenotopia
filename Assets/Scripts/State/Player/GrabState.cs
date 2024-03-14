@@ -7,6 +7,7 @@ public class GrabState : PlayerState
     float facing; // 바라보는 방향을 저장
     BoxCollider2D boxColl;
     Vector2 offset;
+    Rigidbody2D boxRigid;
 
     public override void Enter()
     {
@@ -19,8 +20,10 @@ public class GrabState : PlayerState
             facing = player.transform.localScale.x;
 
             boxColl = player.Box.gameObject.GetComponent<BoxCollider2D>();
+            boxRigid = player.Box.gameObject.GetComponent <Rigidbody2D>();
             offset = new Vector2(Mathf.Abs(boxColl.size.x + player.PlayerColl.size.x) / 2, (boxColl.size.y / 2) + 0.01f);
             player.Box.transform.localPosition = offset;
+            boxRigid.gravityScale = 0f;
         }
         else
         {
@@ -68,6 +71,7 @@ public class GrabState : PlayerState
     public override void Exit()
     {
         player.Animator.speed = 1f;
+        boxRigid.gravityScale = 1f;
     }
 
     private void Move()

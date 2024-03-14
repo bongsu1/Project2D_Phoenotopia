@@ -38,7 +38,6 @@ public class Door : MonoBehaviour, IEnterable
 
         player.Animator.Play("EnterDoor");
         player.Rigid.velocity = Vector2.zero;
-        OnEnter?.Invoke();
 
         // 나오는 문이 있고 그 문이 안열려있으면 열기
         if (exitDoor != null)
@@ -49,6 +48,7 @@ public class Door : MonoBehaviour, IEnterable
 
     public void Exit(Player player)
     {
+        OnEnter?.Invoke();
         player.transform.position = new Vector3(exitPoint.position.x, exitPoint.position.y - ySize);
         player.Animator.Play("ExitDoor");
     }
