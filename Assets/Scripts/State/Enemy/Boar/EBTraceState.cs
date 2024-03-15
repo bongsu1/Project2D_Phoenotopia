@@ -27,7 +27,7 @@ public class EBTraceState : BoarState
     {
         if (Vector2.Distance(boar.transform.position, boar.Player.transform.position) < boar.CheckSize)
         {
-            boar.Rigid.velocity = new Vector2(direction * boar.WalkSpeed / 2, boar.Rigid.velocity.y);
+            boar.Rigid.velocity = new Vector2(direction * boar.WalkSpeed * 0.5f, boar.Rigid.velocity.y);
         }
         else
         {

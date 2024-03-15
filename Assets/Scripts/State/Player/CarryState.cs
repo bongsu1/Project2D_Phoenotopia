@@ -60,7 +60,7 @@ public class CarryState : PlayerState
         if (player.IsGrounded && player.Input.actions["Grab"].IsPressed() && player.Input.actions["Grab"].triggered)
         {
 
-            offset = new Vector2(Mathf.Abs(boxColl.size.x + player.PlayerColl.size.x) / 2, (boxColl.size.y / 2) + 0.01f);
+            offset = new Vector2(Mathf.Abs(boxColl.size.x + player.PlayerColl.size.x) * 0.5f, (boxColl.size.y * 0.5f) + 0.01f);
             player.Animator.Play("BoxDown");
             pressCount--;
         }

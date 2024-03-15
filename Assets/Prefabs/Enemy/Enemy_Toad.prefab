@@ -188,16 +188,18 @@ MonoBehaviour:
   rigid: {fileID: 1599713990035321838}
   playerCheck: {fileID: 1313769298221376783}
   hp: 5
+  damage: 3
   checkSize: 3
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
-  attackCool: 4
-  holdTime: 1
+  hitPower: 5
   jumpPower: 3
   maxjumpDistance: 4
   jumpMultiplier: 1.5
   dieTime: 3
+  attackCool: 4
+  holdTime: 1
 --- !u!1 &8098110686484763038
 GameObject:
   m_ObjectHideFlags: 0

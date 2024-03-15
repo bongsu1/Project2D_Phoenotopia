@@ -4,10 +4,16 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour, IDamagable
 {
+    [Header("Component")]
     [SerializeField] protected Animator animator;
     [SerializeField] protected Rigidbody2D rigid;
     [SerializeField] protected CircleCollider2D playerCheck;
+
+    [Header("Status")]
     [SerializeField] protected int hp;
+    [SerializeField] protected int damage;
+
+    [Header("Physics")]
     [SerializeField] protected float checkSize;
     [SerializeField] LayerMask playerLayer;
 
@@ -28,6 +34,16 @@ public class Enemy : MonoBehaviour, IDamagable
     public virtual void TakeDamage(int damage)
     {
         hp -= damage;
+    }
+
+    public virtual void Knockback(Vector2 hitPoint, float hitPower)
+    {
+        if (hp < 0)
+            return;
+
+        float direction = Mathf.Sign(transform.position.x - hitPoint.x);
+        Vector2 knockback = new Vector2(direction, 0.5f).normalized;
+        rigid.velocity = knockback * hitPower;
     }
 
     public void PlayerCheck()

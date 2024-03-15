@@ -7,12 +7,18 @@ public class Toad : Enemy // 개구리 몬스터
     public enum State { Idle, Attack, Hit, Die }
     protected StateMachine<State> stateMachine = new StateMachine<State>();
 
-    [SerializeField] float attackCool;
-    [SerializeField] float holdTime;
+    [Header("Attack")]
+    [SerializeField] float hitPower;
+
+    [Header("Jump")]
     [SerializeField] float jumpPower;
     [SerializeField] float maxjumpDistance;
     [SerializeField] float jumpMultiplier;
     [SerializeField] float dieTime;
+
+    [Header("Time")]
+    [SerializeField] float attackCool;
+    [SerializeField] float holdTime;
 
     private Coroutine attackRoutine;
     private WaitForSeconds attackWait;
@@ -20,7 +26,6 @@ public class Toad : Enemy // 개구리 몬스터
     private bool onAttack;
     private bool onHit;
     
-
     private void Start()
     {
         attackWait = new WaitForSeconds(attackCool);
@@ -46,6 +51,14 @@ public class Toad : Enemy // 개구리 몬스터
             return;
 
         base.TakeDamage(damage);
+    }
+
+    public override void Knockback(Vector2 hitPoint, float hitPower)
+    {
+        if (onHit)
+            return;
+
+        base.Knockback(hitPoint, hitPower);
 
         if (!onAttack && (hp > 0))
         {
@@ -112,5 +125,21 @@ public class Toad : Enemy // 개구리 몬스터
     public void DestroyGameObject()
     {
         Destroy(gameObject, dieTime);
+        StartCoroutine(DieRoutine());
+    }
+
+    IEnumerator DieRoutine()
+    {
+        yield return new WaitForSeconds(1f);
+        rigid.constraints = RigidbodyConstraints2D.FreezeRotation;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(onAttack && (((1 << collision.gameObject.layer) & PlayerLayer) != 0))
+        {
+            player.TakeDamage(damage);
+            player.Knockback(transform.position, hitPower);
+        }
     }
 }

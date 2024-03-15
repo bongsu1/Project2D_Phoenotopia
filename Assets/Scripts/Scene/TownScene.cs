@@ -26,11 +26,9 @@ public class TownScene : BaseScene
     }
 
     // ¾À ÀüÈ¯
-    public void TownExit(int point)
+    public void WorldSceneLoad(int point)
     {
         exitPoint = point;
-        // test..
-        Manager.Scene.LoadScene("BattleScene");
-        // TODO WorldMap
+        Manager.Scene.LoadScene("WorldScene");
     }
 }

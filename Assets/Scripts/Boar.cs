@@ -8,6 +8,12 @@ public class Boar : Enemy
     private StateMachine<State> stateMachine = new StateMachine<State>();
 
     [SerializeField] Transform[] patrolPoint;
+
+    [Header("Attack")]
+    [SerializeField] float runHitPower;
+    [SerializeField] float jumpHitPower;
+
+    [Header("Move")]
     [SerializeField] float walkSpeed;
     [SerializeField] float runSpeed;
     [SerializeField] float maxSpeed;
@@ -27,6 +33,7 @@ public class Boar : Enemy
     private Coroutine jumpAttackRoutine;
     private bool onHit;
     private bool onJumpAttack;
+    private bool onRunAttack;
 
     // property
     public Transform[] PatrolPoint => patrolPoint;
@@ -71,6 +78,14 @@ public class Boar : Enemy
             return;
 
         base.TakeDamage(damage);
+    }
+
+    public override void Knockback(Vector2 hitPoint, float hitPower)
+    {
+        if (onHit)
+            return;
+
+        base.Knockback(hitPoint, hitPower);
 
         if (!onJumpAttack && (hp > 0))
         {
@@ -113,12 +128,16 @@ public class Boar : Enemy
         float time = 0;
         animator.Play("RunHold");
         yield return holdWait;
+
+        onRunAttack = true;
         while (time < runTime)
         {
             time += Time.deltaTime;
             RunAttack(direction);
             yield return null;
         }
+        onRunAttack = false;
+
         stateMachine.ChangeState(State.Trace);
     }
 
@@ -179,5 +198,19 @@ public class Boar : Enemy
     public void DestroyGameObject()
     {
         Destroy(transform.parent.gameObject, dieTime);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (onRunAttack && (((1 << collision.gameObject.layer) & PlayerLayer) != 0))
+        {
+            player.TakeDamage(damage);
+            player.Knockback(transform.position, runHitPower);
+        }
+        else if (onJumpAttack && (((1 << collision.gameObject.layer) & PlayerLayer) != 0))
+        {
+            player.TakeDamage(damage);
+            player.Knockback(transform.position, jumpHitPower);
+        }
     }
 }

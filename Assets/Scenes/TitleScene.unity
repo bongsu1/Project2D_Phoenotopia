@@ -363,7 +363,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startPoint: []
-  exitPoint: 2
+  exitPoint: 0
+  battlePoistion: {x: 0, y: 0}
   OnXButtonPress:
     m_PersistentCalls:
       m_Calls:

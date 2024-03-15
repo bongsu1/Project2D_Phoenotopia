@@ -323,6 +323,9 @@ MonoBehaviour:
   multiplier: 2.5
   lowJumpMultiplier: 2
   maxFall: 15
+  takeHitPower: 0
+  playerMaterial: {fileID: 6200000, guid: 5fa4787fc749df74abf77007e08274d7, type: 2}
+  bounciness: 0.7
   groundLayer:
     serializedVersion: 2
     m_Bits: 704
@@ -346,7 +349,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   slingshotBullet: {fileID: 1761702067083817779, guid: 810110a661397cf40b04fb1c8274c310, type: 3}
-  isStart: 1
 --- !u!1 &5390923645235274957
 GameObject:
   m_ObjectHideFlags: 0

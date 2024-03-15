@@ -7,9 +7,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamagable
 {
-    public enum State { Sleep, Normal, Jump, Duck, Climb, Attack, Charge, Grab, Carry, Talk, Use }
+    public enum State { Sleep, Normal, Jump, Duck, Climb, Attack, Charge, Grab, Carry, Talk, Use, Hit, Die }
     private StateMachine<State> stateMachine = new StateMachine<State>();
 
     [Header("Component")]
@@ -57,6 +57,9 @@ public class Player : MonoBehaviour
     [SerializeField] float multiplier;
     [SerializeField] float lowJumpMultiplier;
     [SerializeField] float maxFall;
+    [SerializeField] float takeHitPower;
+    [SerializeField] PhysicsMaterial2D playerMaterial;
+    [SerializeField] float bounciness;
 
     [Header("LayerMask")]
     [SerializeField] LayerMask groundLayer;
@@ -87,7 +90,6 @@ public class Player : MonoBehaviour
     private bool onDoor;
     private bool onEnter;
     private bool onExit;
-    public bool isStart; // test.. public
     Collider2D platformcoll;
     Box box;
 
@@ -99,6 +101,7 @@ public class Player : MonoBehaviour
     public BoxCollider2D PlayerColl => playercoll;
     public Box Box { get { return box; } set { box = value; } }
     public Transform SlingshotAim => slingshotAim;
+    public PhysicsMaterial2D PlayerMaterial { get { return playerMaterial; } set { playerMaterial = value; } }
 
     public float Accel => accel;
     public float JumpSpeed => jumpSpeed;
@@ -108,6 +111,8 @@ public class Player : MonoBehaviour
     public float ThrowPower => throwPower;
     public float HitPower => hitPower;
     public float AimSpeed => aimSpeed;
+    public float TakeHitPower { get { return takeHitPower; } set { takeHitPower = value; } }
+    public float Bounciness => bounciness;
 
     public bool IsGrounded => isGrounded;
     public bool IsDucking => isDucking;
@@ -116,7 +121,6 @@ public class Player : MonoBehaviour
     public bool OnTalk { get { return onTalk; } set { onTalk = value; } }
     public bool OnDoor => onDoor;
     public bool OnEnter => onEnter;
-    public bool IsStart { get { return isStart; } set { isStart = value; } }
 
     private void Start()
     {
@@ -131,10 +135,13 @@ public class Player : MonoBehaviour
         stateMachine.AddState(State.Carry, new CarryState(this));
         stateMachine.AddState(State.Talk, new TalkState(this));
         stateMachine.AddState(State.Use, new UseState(this));
+        stateMachine.AddState(State.Hit, new HitState(this));
+        stateMachine.AddState(State.Die, new DieState(this));
 
         stateMachine.Start(State.Normal);
     }
 
+    float xPosition;
     private void Update()
     {
         if (onEnter)
@@ -183,7 +190,6 @@ public class Player : MonoBehaviour
         stateMachine.Update();
     }
 
-    float xPosition;
     private void FixedUpdate()
     {
         if (onEnter)
@@ -217,13 +223,8 @@ public class Player : MonoBehaviour
             IDamagable damagable = colliders[i].GetComponent<IDamagable>();
             if (damagable != null)
             {
-                Rigidbody2D other = colliders[i].GetComponent<Rigidbody2D>();
-                if (other != null)
-                {
-                    Vector2 hitDir = new Vector2(transform.localScale.x, attackRange).normalized;
-                    other.velocity = hitDir * hitPower;
-                }
                 damagable.TakeDamage(damage);
+                damagable.Knockback(transform.position, hitPower);
             }
         }
     }
@@ -390,5 +391,50 @@ public class Player : MonoBehaviour
         {
             onDoor = false;
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        // test..
+        //hp -= damage;
+    }
+
+    public void Knockback(Vector2 hitPoint, float hitPower)
+    {
+        if (hp < 0)
+            return;
+
+        float direction = Mathf.Sign(transform.position.x - hitPoint.x);
+        Vector2 knockback = new Vector2(direction, hitPower > 9 ? hitPower * 0.5f : 0.5f).normalized;
+        rigid.velocity = knockback * hitPower;
+        transform.localScale = new Vector3(-direction, 1f, 1f);
+
+        takeHitPower = hitPower;
+        if (hp > 0)
+        {
+            stateMachine.ChangeState(State.Hit);
+        }
+    }
+
+    Coroutine knockbackRoutine;
+    public void StartKnockbackRoutine(float takeHitPower)
+    {
+        knockbackRoutine = StartCoroutine(KnockbackRoutine(takeHitPower));
+    }
+
+    IEnumerator KnockbackRoutine(float takeHitPower)
+    {
+        yield return new WaitForSeconds(takeHitPower * 0.25f);
+        ToNormalState();
+    }
+
+    public void StopKnockbackRoutine()
+    {
+        StopCoroutine(knockbackRoutine);
+    }
+
+    private void OnDisable()
+    {
+        playerMaterial.bounciness = 0f;
     }
 }

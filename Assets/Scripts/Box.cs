@@ -16,4 +16,11 @@ public class Box : MonoBehaviour, IDamagable
             Destroy(gameObject);
         }
     }
+
+    public void Knockback(Vector2 hitPoint, float hitPower)
+    {
+        float direction = Mathf.Sign(transform.position.x - hitPoint.x);
+        Vector2 knockback = new Vector2(direction, 0.5f).normalized;
+        rigid.velocity = knockback * hitPower;
+    }
 }

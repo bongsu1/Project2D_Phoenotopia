@@ -21,7 +21,7 @@ public class GrabState : PlayerState
 
             boxColl = player.Box.gameObject.GetComponent<BoxCollider2D>();
             boxRigid = player.Box.gameObject.GetComponent <Rigidbody2D>();
-            offset = new Vector2(Mathf.Abs(boxColl.size.x + player.PlayerColl.size.x) / 2, (boxColl.size.y / 2) + 0.01f);
+            offset = new Vector2(Mathf.Abs(boxColl.size.x + player.PlayerColl.size.x) * 0.5f, (boxColl.size.y * 0.5f) + 0.01f);
             player.Box.transform.localPosition = offset;
             boxRigid.gravityScale = 0f;
         }

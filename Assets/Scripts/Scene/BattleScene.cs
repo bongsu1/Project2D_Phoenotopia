@@ -8,7 +8,13 @@ public class BattleScene : BaseScene
 
     public override IEnumerator LoadingRoutine()
     {
+        exitPoint = 0;
         spawner.SpawnMonster();
         yield return null;
+    }
+
+    public void WorldSceneLoad()
+    {
+        Manager.Scene.LoadScene("WorldScene");
     }
 }
