@@ -1,4 +1,5 @@
 using System.Collections;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
@@ -6,7 +7,6 @@ using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 public class SceneManager : Singleton<SceneManager>
 {
     [SerializeField] Image fade;
-    [SerializeField] Slider loadingBar;
     [SerializeField] float fadeTime;
 
     [SerializeField] int exitPoint; // 전 씬에서 나온 지점 다음 씬에 전달용
@@ -37,8 +37,15 @@ public class SceneManager : Singleton<SceneManager>
         StartCoroutine(LoadingRoutine(sceneName));
     }
 
+    private bool isStart;
     IEnumerator LoadingRoutine(string sceneName)
     {
+        BaseScene prevScene = GetCurScene();
+        if (prevScene.name == "TitleScene")
+        {
+            Debug.Log("Start");
+            isStart = true;
+        }
         yield return FadeOut();
 
         Manager.Pool.ClearPool();
@@ -52,12 +59,10 @@ public class SceneManager : Singleton<SceneManager>
         battlePosition = GetCurScene().BattlePosition;
 
         Time.timeScale = 0f;
-        loadingBar.gameObject.SetActive(true);
 
         AsyncOperation oper = UnitySceneManager.LoadSceneAsync(sceneName);
         while (oper.isDone == false)
         {
-            loadingBar.value = oper.progress;
             yield return null;
         }
 
@@ -68,17 +73,20 @@ public class SceneManager : Singleton<SceneManager>
         curScene.BattlePosition = battlePosition; // 몬스터와 싸운 지점 전달
         yield return curScene.LoadingRoutine();
 
-        loadingBar.gameObject.SetActive(false);
         Time.timeScale = 1f;
 
         yield return FadeIn();
+        if (isStart)
+        {
+            isStart = false;
+        }
     }
 
     IEnumerator FadeOut()
     {
         float rate = 0;
-        Color fadeOutColor = new Color(fade.color.r, fade.color.g, fade.color.b, 1f);
-        Color fadeInColor = new Color(fade.color.r, fade.color.g, fade.color.b, 0f);
+        Color fadeOutColor = isStart ? new Color(fade.color.r, fade.color.g, fade.color.b, 1f) : Color.black;
+        Color fadeInColor = isStart ? new Color(fade.color.r, fade.color.g, fade.color.b, 0f) : new Color(0f, 0f, 0f, 0f);
 
         while (rate <= 1)
         {
@@ -91,8 +99,8 @@ public class SceneManager : Singleton<SceneManager>
     IEnumerator FadeIn()
     {
         float rate = 0;
-        Color fadeOutColor = new Color(fade.color.r, fade.color.g, fade.color.b, 1f);
-        Color fadeInColor = new Color(fade.color.r, fade.color.g, fade.color.b, 0f);
+        Color fadeOutColor = isStart ? new Color(fade.color.r, fade.color.g, fade.color.b, 1f) : Color.black;
+        Color fadeInColor = isStart ? new Color(fade.color.r, fade.color.g, fade.color.b, 0f) : new Color(0f, 0f, 0f, 0f);
 
         while (rate <= 1)
         {

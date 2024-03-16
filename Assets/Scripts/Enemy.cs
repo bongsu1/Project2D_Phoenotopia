@@ -21,7 +21,7 @@ public class Enemy : MonoBehaviour, IDamagable
     protected bool onPlayerCheck;
     private int attackCount = 1;
 
-    
+
     // property
     public Animator Animator => animator;
     public Rigidbody2D Rigid => rigid;
@@ -44,6 +44,12 @@ public class Enemy : MonoBehaviour, IDamagable
         float direction = Mathf.Sign(transform.position.x - hitPoint.x);
         Vector2 knockback = new Vector2(direction, 0.5f).normalized;
         rigid.velocity = knockback * hitPower;
+
+        if (player == null)
+        {
+            player = FindObjectOfType<Player>();
+            playerCheck.gameObject.SetActive(false);
+        }
     }
 
     public void PlayerCheck()

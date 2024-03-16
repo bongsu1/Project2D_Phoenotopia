@@ -1,33 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
-public class TitleScene : BaseScene
+public class DieScene : BaseScene
 {
-    public UnityEvent OnXButtonPress;
-    [SerializeField] Image textImage;
+    [SerializeField] Player Player;
+
+    public UnityEvent OnPressXButton;
 
     public override IEnumerator LoadingRoutine()
     {
+        exitPoint = 0;
+        yield return null;
+        Player.EndGame();
         yield return null;
     }
 
-    // 게임씬으로 전환
-    private void GameStart()
+    private void TitleSceneLoad()
     {
-        Manager.Scene.LoadScene("TownScene");
-        textImage.gameObject.SetActive(false);
+        Manager.Scene.LoadScene("TitleScene");
     }
 
     private void OnAttack(InputValue value)
     {
         if (value.isPressed)
         {
-            OnXButtonPress?.Invoke();
-            GameStart();
+            TitleSceneLoad();
+            OnPressXButton?.Invoke();
         }
     }
 }

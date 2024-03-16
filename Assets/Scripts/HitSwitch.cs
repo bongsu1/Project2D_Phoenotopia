@@ -50,5 +50,5 @@ public class HitSwitch : MonoBehaviour, IDamagable
         isPlay = value;
     }
 
-    public void Knockback(Vector2 hitPoint, float hitPower) { } // none Knockback
+    public void Knockback(Vector2 hitPoint, float hitPower) { } // 넉백하지 않음
 }

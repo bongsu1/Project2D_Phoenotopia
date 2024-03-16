@@ -14,8 +14,8 @@ public class DuckState : PlayerState
         {
             player.Animator.Play("Duck");
         }
-        player.PlayerColl.offset = new Vector2(0f, 0.3f);
-        player.PlayerColl.size = new Vector2(0.45f, 0.6f);
+        player.PlayerColl.offset = new Vector2(0f, 0.25f);
+        player.PlayerColl.size = new Vector2(0.45f, 0.5f);
     }
 
     public override void Update()

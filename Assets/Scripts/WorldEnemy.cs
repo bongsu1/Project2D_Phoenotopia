@@ -83,7 +83,6 @@ public class WorldEnemy : MonoBehaviour
     IEnumerator PatrolRoutine()
     {
         direction = Random.Range(0, 2) == 0 ? 1 : -1;
-        Debug.Log(direction);
 
         while (true)
         {

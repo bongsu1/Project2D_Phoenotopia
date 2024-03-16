@@ -105,7 +105,7 @@ public class NPC : MonoBehaviour, IInteractable
 
     IEnumerator TalkRoutine()
     {
-        // test
+        // test player talkState 수정바람
         curState = State.Talk;
         yield return waitUntil;
         Debug.Log("Talk 1");

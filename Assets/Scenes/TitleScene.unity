@@ -364,7 +364,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startPoint: []
   exitPoint: 0
-  battlePoistion: {x: 0, y: 0}
+  battlePosition: {x: 0, y: 0}
   OnXButtonPress:
     m_PersistentCalls:
       m_Calls:
@@ -380,6 +380,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  textImage: {fileID: 1860098130}
 --- !u!1 &380328766
 GameObject:
   m_ObjectHideFlags: 0
@@ -1118,7 +1119,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1729050342
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1502,7 +1503,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2003623639
 RectTransform:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class Boar : Enemy
@@ -34,6 +35,7 @@ public class Boar : Enemy
     private bool onHit;
     private bool onJumpAttack;
     private bool onRunAttack;
+    private bool OnCollisionPlayer; // 돌진중 플레이어와 부딪히면 true
 
     // property
     public Transform[] PatrolPoint => patrolPoint;
@@ -86,6 +88,7 @@ public class Boar : Enemy
             return;
 
         base.Knockback(hitPoint, hitPower);
+        onRunAttack = false;
 
         if (!onJumpAttack && (hp > 0))
         {
@@ -132,13 +135,23 @@ public class Boar : Enemy
         onRunAttack = true;
         while (time < runTime)
         {
+            if (OnCollisionPlayer)
+            {
+                animator.Play("WallHit");
+                rigid.velocity = Vector2.zero;
+                break;
+            }
+
             time += Time.deltaTime;
             RunAttack(direction);
             yield return null;
         }
-        onRunAttack = false;
 
-        stateMachine.ChangeState(State.Trace);
+        onRunAttack = false;
+        if (!OnCollisionPlayer)
+            ToTraceState();
+
+        OnCollisionPlayer = false;
     }
 
     public void StopRunAttackRoutine()
@@ -206,6 +219,7 @@ public class Boar : Enemy
         {
             player.TakeDamage(damage);
             player.Knockback(transform.position, runHitPower);
+            OnCollisionPlayer = true;
         }
         else if (onJumpAttack && (((1 << collision.gameObject.layer) & PlayerLayer) != 0))
         {

@@ -7,6 +7,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] int damage;
     [SerializeField] Rigidbody2D rigid;
     [SerializeField] float time;
+    [SerializeField] float hitPower;
 
     private void Start()
     {
@@ -19,6 +20,7 @@ public class Bullet : MonoBehaviour
         if (damagable != null)
         {
             damagable.TakeDamage(damage);
+            damagable.Knockback(transform.position, hitPower);
             Destroy(gameObject);
         }
     }

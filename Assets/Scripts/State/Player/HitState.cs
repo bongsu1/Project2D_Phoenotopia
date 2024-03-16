@@ -26,13 +26,7 @@ public class HitState : PlayerState
         player.Rigid.sharedMaterial = player.PlayerMaterial;
         player.Rigid.gravityScale = 1f;
         player.TakeHitPower = 0f;
-    }
-
-    private void Move()
-    {
-        float target = player.MoveDir.x * player.MoveSpeed;
-        float diffSpeed = target - player.Rigid.velocity.x;
-        player.Rigid.AddForce(Vector2.right * diffSpeed * player.Accel);
+        player.OnHit = false;
     }
 
     public HitState(Player player)

@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using UnityEditor;
 using UnityEngine;
@@ -90,6 +91,7 @@ public class Player : MonoBehaviour, IDamagable
     private bool onDoor;
     private bool onEnter;
     private bool onExit;
+    private bool onHit;
     Collider2D platformcoll;
     Box box;
 
@@ -121,6 +123,7 @@ public class Player : MonoBehaviour, IDamagable
     public bool OnTalk { get { return onTalk; } set { onTalk = value; } }
     public bool OnDoor => onDoor;
     public bool OnEnter => onEnter;
+    public bool OnHit { get { return onHit; } set { onHit = value; } }
 
     private void Start()
     {
@@ -291,9 +294,16 @@ public class Player : MonoBehaviour, IDamagable
         onExit = false;
     }
 
+    // 게임을 시작할때 씬에서 호출
     public void StartGame()
     {
         stateMachine.ChangeState(State.Sleep);
+    }
+
+    // DieScene에서 호출용
+    public void EndGame()
+    {
+        stateMachine.ChangeState(State.Die);
     }
 
     // 공격 애니메이션이 끝나는 지점에서 애니메이션 이벤트로 호출
@@ -395,25 +405,30 @@ public class Player : MonoBehaviour, IDamagable
 
     public void TakeDamage(int damage)
     {
-        // test..
-        //hp -= damage;
+        if (onHit)
+            return;
+
+        hp -= damage;
     }
 
     public void Knockback(Vector2 hitPoint, float hitPower)
     {
+        if (onHit)
+            return;
+
         if (hp < 0)
             return;
 
+        onHit = true;
         float direction = Mathf.Sign(transform.position.x - hitPoint.x);
         Vector2 knockback = new Vector2(direction, hitPower > 9 ? hitPower * 0.5f : 0.5f).normalized;
         rigid.velocity = knockback * hitPower;
         transform.localScale = new Vector3(-direction, 1f, 1f);
 
         takeHitPower = hitPower;
-        if (hp > 0)
-        {
-            stateMachine.ChangeState(State.Hit);
-        }
+
+        stateMachine.ChangeState(State.Hit);
+        Die();
     }
 
     Coroutine knockbackRoutine;
@@ -431,6 +446,16 @@ public class Player : MonoBehaviour, IDamagable
     public void StopKnockbackRoutine()
     {
         StopCoroutine(knockbackRoutine);
+        onHit = false;
+    }
+
+    // test..
+    public void Die()
+    {
+        if (hp > 0)
+            return;
+
+        Manager.Scene.LoadScene("DieScene");
     }
 
     private void OnDisable()

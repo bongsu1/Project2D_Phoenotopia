@@ -164,3 +164,4 @@ MonoBehaviour:
   damage: 0
   rigid: {fileID: 8985731720412988111}
   time: 5
+  hitPower: 3

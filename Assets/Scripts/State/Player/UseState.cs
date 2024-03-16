@@ -12,6 +12,9 @@ public class UseState : PlayerState
     Quaternion topTurnPoint;
     float rotateDir;
 
+    Coroutine aimFlashRoutine;
+    SpriteRenderer renderer;
+
     public override void Enter()
     {
         bottomTurnPoint = Quaternion.Euler(0f, 0f, -40f);
@@ -24,6 +27,9 @@ public class UseState : PlayerState
         aim.localRotation = Quaternion.Euler(0f, 0f, -39f);
         rotateDir = -0.1f;
         aim.gameObject.SetActive(true);
+
+        renderer = aim.GetComponentInChildren<SpriteRenderer>();
+        aimFlashRoutine = player.StartCoroutine(AimFlashRoutine());
     }
 
     public override void Update()
@@ -31,7 +37,7 @@ public class UseState : PlayerState
         if (aim.localRotation.z < bottomTurnPoint.z)
         {
             player.Animator.Play("AimUp");
-            rotateDir = 1f;   
+            rotateDir = 1f;
         }
         else if (aim.localRotation.z > topTurnPoint.z)
         {
@@ -51,6 +57,7 @@ public class UseState : PlayerState
     public override void Exit()
     {
         aim.gameObject.SetActive(false);
+        player.StopCoroutine(AimFlashRoutine());
     }
 
     public override void Transition()
@@ -58,6 +65,17 @@ public class UseState : PlayerState
         if (player.Input.actions["Jump"].IsPressed() && player.Input.actions["Jump"].triggered)
         {
             ChangeState(Player.State.Normal);
+        }
+    }
+
+    IEnumerator AimFlashRoutine()
+    {
+        while (true)
+        {
+            renderer.color = Color.white;
+            yield return new WaitForSeconds(0.2f);
+            renderer.color = Color.red;
+            yield return new WaitForSeconds(0.2f);
         }
     }
 
