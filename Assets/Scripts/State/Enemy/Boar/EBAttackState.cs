@@ -10,8 +10,8 @@ public class EBAttackState : BoarState
     public override void Enter()
     {
         boar.Rigid.velocity = Vector3.zero;
-        int attackType = Random.Range(0, 2);
-        type = (Type)attackType;
+        int attackType = Random.Range(0, 3);
+        type = attackType < 2 ? Type.Run : Type.Jump;
 
         float direction = Mathf.Sign(boar.Player.transform.position.x - boar.transform.position.x);
         if (type == Type.Run)

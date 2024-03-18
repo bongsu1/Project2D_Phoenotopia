@@ -56,7 +56,10 @@ public class DuckState : PlayerState
 
     public override void Transition()
     {
-        if (!player.IsDucking) // + 머리위에 천장이 없으면
+        if (player.OnCeiling)
+            return;
+
+        if (!player.IsDucking)
         {
             ChangeState(Player.State.Normal);
         }

@@ -10,6 +10,10 @@ public class TownScene : BaseScene
 
     public override IEnumerator LoadingRoutine()
     {
+        statusRender.SetHp();
+        Manager.Data.RefillStamina();
+        yield return null;
+
         if (exitPoint == 0) // 시작하거나 죽었을때
         {
             player.StartGame();

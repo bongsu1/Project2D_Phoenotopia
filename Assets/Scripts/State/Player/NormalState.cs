@@ -11,6 +11,20 @@ public class NormalState : PlayerState
 
     public override void Update()
     {
+        if (player.Input.actions["Run"].IsPressed() && player.Input.actions["Run"].triggered)
+        {
+            Manager.Data.Stamina -= player.UseStamina * 0.5f;
+            Manager.Data.StopStaminaRegenRoutine();
+        }
+        else if (player.Input.actions["Run"].IsPressed() && player.Rigid.velocity.magnitude > 0.01f)
+        {
+            Manager.Data.Stamina -= Time.deltaTime;
+        }
+        else if (!player.Input.actions["Run"].IsPressed() && player.Input.actions["Run"].triggered)
+        {
+            Manager.Data.StartStaminaRegenRoutine();
+        }
+
         player.Animator.SetFloat("MoveSpeed", Mathf.Abs(player.Rigid.velocity.x));
 
         if (player.MoveDir.x != 0)
@@ -44,9 +58,15 @@ public class NormalState : PlayerState
     public override void Transition()
     {
         // 공격키를 누르면 AttackState
-        if (!player.OnNPC && player.Input.actions["Attack"].IsPressed() && player.Input.actions["Attack"].triggered)
+        if (Manager.Data.Stamina >= player.UseStamina && !player.OnNPC && player.Input.actions["Attack"].IsPressed() && player.Input.actions["Attack"].triggered)
         {
+            Manager.Data.StartStaminaRegenRoutine();
             ChangeState(Player.State.Attack);
+        }
+        // 스태미나가 부족한 상태에서 공격키를 누르고 있으면 ChargeState
+        else if (Manager.Data.Stamina < player.UseStamina && !player.OnNPC && player.Input.actions["Attack"].IsPressed() && player.Input.actions["Attack"].triggered)
+        {
+            ChangeState(Player.State.Charge);
         }
         // NPC앞에서 공격키를 누르면 TalkState
         else if (player.OnNPC && player.Input.actions["Attack"].IsPressed() && player.Input.actions["Attack"].triggered)
@@ -54,7 +74,7 @@ public class NormalState : PlayerState
             ChangeState(Player.State.Talk);
         }
         // Use키를 누르면 UseState
-        else if (player.Input.actions["Use"].IsPressed() && player.Input.actions["Use"].triggered)// +아이템을 장착하고 있으면
+        else if (Manager.Data.Stamina >= player.UseStamina && player.Input.actions["Use"].IsPressed() && player.Input.actions["Use"].triggered)// +아이템을 장착하고 있으면
         {
             ChangeState(Player.State.Use);
         }

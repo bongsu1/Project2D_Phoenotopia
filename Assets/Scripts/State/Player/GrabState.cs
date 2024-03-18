@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GrabState : PlayerState
 {
@@ -20,7 +21,7 @@ public class GrabState : PlayerState
             facing = player.transform.localScale.x;
 
             boxColl = player.Box.gameObject.GetComponent<BoxCollider2D>();
-            boxRigid = player.Box.gameObject.GetComponent <Rigidbody2D>();
+            boxRigid = player.Box.gameObject.GetComponent<Rigidbody2D>();
             offset = new Vector2(Mathf.Abs(boxColl.size.x + player.PlayerColl.size.x) * 0.5f, (boxColl.size.y * 0.5f) + 0.01f);
             player.Box.transform.localPosition = offset;
             boxRigid.gravityScale = 0f;
@@ -41,7 +42,14 @@ public class GrabState : PlayerState
         // 잡고있는 상태에서 위방향키를 누르고 있으면 들어올린다
         if (player.MoveDir.y > 0.1f)
         {
-            player.Animator.Play("BoxUp");
+            if (player.Box.Mass > 4)
+            {
+                player.Animator.Play("BoxHeavy");
+            }
+            else
+            {
+                player.Animator.Play("BoxUp");
+            }
             player.Animator.speed = 1f;
         }
         else if (player.MoveDir.x == 0)
@@ -83,7 +91,7 @@ public class GrabState : PlayerState
 
     public override void Transition()
     {
-        if (player.Box ==  null)
+        if (player.Box == null)
             return;
 
         if (!player.Input.actions["Grab"].IsPressed() && player.Input.actions["Grab"].triggered)

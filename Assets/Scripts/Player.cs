@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.U2D;
 
 public class Player : MonoBehaviour, IDamagable
 {
@@ -22,11 +23,12 @@ public class Player : MonoBehaviour, IDamagable
     [SerializeField] Transform grabPoint; // 상자를 잡는 위치
     [SerializeField] Transform interactPoint; // NPC 상호작용 포인트
     [SerializeField] Transform slingshotAim;
+    [SerializeField] PlayerHeadCheck headCheck;
+    [SerializeField] PixelPerfectCamera pixel;
 
     [Header("status")]
     [SerializeField] int damage;
-    [SerializeField] int hp;
-    [SerializeField] int stamina;
+    [SerializeField] float useStamina;
 
     [Header("Normal")]
     [SerializeField] float walkSpeed;
@@ -92,6 +94,7 @@ public class Player : MonoBehaviour, IDamagable
     private bool onEnter;
     private bool onExit;
     private bool onHit;
+    private bool onCeiling; // 머리위에 천장체크
     Collider2D platformcoll;
     Box box;
 
@@ -103,7 +106,8 @@ public class Player : MonoBehaviour, IDamagable
     public BoxCollider2D PlayerColl => playercoll;
     public Box Box { get { return box; } set { box = value; } }
     public Transform SlingshotAim => slingshotAim;
-    public PhysicsMaterial2D PlayerMaterial { get { return playerMaterial; } set { playerMaterial = value; } }
+    public PhysicsMaterial2D PlayerMaterial => playerMaterial;
+    public PixelPerfectCamera Pixel => pixel;
 
     public float Accel => accel;
     public float JumpSpeed => jumpSpeed;
@@ -115,6 +119,7 @@ public class Player : MonoBehaviour, IDamagable
     public float AimSpeed => aimSpeed;
     public float TakeHitPower { get { return takeHitPower; } set { takeHitPower = value; } }
     public float Bounciness => bounciness;
+    public float UseStamina => useStamina;
 
     public bool IsGrounded => isGrounded;
     public bool IsDucking => isDucking;
@@ -124,6 +129,7 @@ public class Player : MonoBehaviour, IDamagable
     public bool OnDoor => onDoor;
     public bool OnEnter => onEnter;
     public bool OnHit { get { return onHit; } set { onHit = value; } }
+    public bool OnCeiling => onCeiling;
 
     private void Start()
     {
@@ -160,6 +166,7 @@ public class Player : MonoBehaviour, IDamagable
         isGrounded = groundCount > 0;
         isDucking = moveDir.y < -0.1f && isGrounded;
         isLadder = ladderCount > 0;
+        onCeiling = headCheck.OnCeiling;
 
         // 숙인 상태면 느려지게
         if (isDucking)
@@ -177,7 +184,7 @@ public class Player : MonoBehaviour, IDamagable
             moveSpeed = grabMoveSpeed;
         }
         // "Run"키를 누르고 움직이면 달리기
-        else if (input.actions["Run"].IsPressed())
+        else if (input.actions["Run"].IsPressed() && (Manager.Data.Stamina > 0))
         {
             moveSpeed = runSpeed;
         }
@@ -316,6 +323,9 @@ public class Player : MonoBehaviour, IDamagable
     // 물건을 잡아 올리는 애니메이션이 끝나고 호출
     public void ToCarryState()
     {
+        if (box.Mass > 4)
+            return;
+
         stateMachine.ChangeState(State.Carry);
     }
 
@@ -408,7 +418,14 @@ public class Player : MonoBehaviour, IDamagable
         if (onHit)
             return;
 
-        hp -= damage;
+        if (Manager.Data.Hp - damage < 0)
+        {
+            Manager.Data.Hp = 0;
+        }
+        else
+        {
+            Manager.Data.Hp -= damage;
+        }
     }
 
     public void Knockback(Vector2 hitPoint, float hitPower)
@@ -416,7 +433,7 @@ public class Player : MonoBehaviour, IDamagable
         if (onHit)
             return;
 
-        if (hp < 0)
+        if (Manager.Data.Hp < 0)
             return;
 
         onHit = true;
@@ -449,10 +466,9 @@ public class Player : MonoBehaviour, IDamagable
         onHit = false;
     }
 
-    // test..
     public void Die()
     {
-        if (hp > 0)
+        if (Manager.Data.Hp > 0)
             return;
 
         Manager.Scene.LoadScene("DieScene");

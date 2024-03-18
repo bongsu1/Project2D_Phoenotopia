@@ -52,6 +52,7 @@ public class ClimbState : PlayerState
             {
                 Jump();
             }
+
             if (!player.IsGrounded)
             {
                 ChangeState(Player.State.Jump);

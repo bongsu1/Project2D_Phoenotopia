@@ -1,18 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Timeline;
+using UnityEngine.UI;
 
 public class NPC : MonoBehaviour, IInteractable
 {
     public enum State { Idle, Talk, Walk, Action }
 
     private State curState;
-
+    [Header("NPC")]
     [SerializeField] Animator animator;
     [SerializeField] Rigidbody2D rigid;
     [SerializeField] Transform[] checkPoint;
     [SerializeField] float idleTime;
+    [SerializeField] float talkingDistance;
+
+    [Header("TalkUI")]
+    [SerializeField] Canvas speechUI;
+    [SerializeField] Image speechBubble;
+    [SerializeField] TMP_Text talkScript;
+    [SerializeField] Vector3 offset;
 
     private Player player;
     private Coroutine talkRoutine;
@@ -23,9 +32,11 @@ public class NPC : MonoBehaviour, IInteractable
 
     Transform dirPoint;
     private int index;
+    private float direction;
 
     private void Start()
     {
+        direction = 1;
         index = 0;
         waitIdle = new WaitForSeconds(idleTime);
         dirPoint = checkPoint.Length > 1 ? checkPoint[index] : null;
@@ -70,7 +81,7 @@ public class NPC : MonoBehaviour, IInteractable
     {
         animator.Play("Walk");
 
-        float direction = Mathf.Sign(dirPoint.position.x - transform.position.x);
+        direction = Mathf.Sign(dirPoint.position.x - transform.position.x);
         transform.localScale = new Vector3(direction, 1f, 1f);
 
         rigid.velocity = new Vector2(direction, rigid.velocity.y);
@@ -94,7 +105,23 @@ public class NPC : MonoBehaviour, IInteractable
 
         this.player = player;
         waitUntil = new WaitUntil(() => player.Input.actions["Attack"].IsPressed() && player.Input.actions["Attack"].triggered);
+        StartCoroutine(PlayerMoveRoutine(player));
         Talk();
+    }
+
+    IEnumerator PlayerMoveRoutine(Player player)
+    {
+        float playerXPos = transform.position.x + (talkingDistance * direction);
+        player.transform.localScale = new Vector2(direction, 1f);
+
+        while (Mathf.Abs(playerXPos - player.transform.position.x) > 0.1f)
+        {
+            player.Rigid.velocity = Vector2.right * direction * 2f;
+            yield return null;
+        }
+
+        player.Rigid.velocity = Vector2.zero;
+        player.transform.localScale = new Vector2(-direction, 1f);
     }
 
     private void Talk()
@@ -105,25 +132,28 @@ public class NPC : MonoBehaviour, IInteractable
 
     IEnumerator TalkRoutine()
     {
-        // test player talkState 수정바람
+        speechUI.gameObject.SetActive(true);
+        //speechBubble.transform.position = Camera.main.WorldToScreenPoint(transform.position + offset);
         curState = State.Talk;
         yield return waitUntil;
-        Debug.Log("Talk 1");
+        talkScript.text = "Hi, nice meet you";
         yield return new WaitForSeconds(.1f);
         yield return waitUntil;
-        Debug.Log("Talk 2");
+        talkScript.text = "Jump Key 'Z'\nAttack key 'X'";
         yield return new WaitForSeconds(.1f);
         yield return waitUntil;
-        Debug.Log("Talk 3");
+        talkScript.text = "Grab key 'D'\nItem Use key 'C'";
         yield return new WaitForSeconds(.1f);
         yield return waitUntil;
-        Debug.Log("Talk 4");
+        talkScript.text = "Ducking to\nhold'Down Arrow'";
         yield return new WaitForSeconds(.1f);
         yield return waitUntil;
         talkRoutine = null;
         player.OnTalk = false;
         player = null;
+        waitUntil = null;
         curState = State.Idle;
+        speechUI.gameObject.SetActive(false);
     }
 
     IEnumerator IdleRoutine()
@@ -139,6 +169,14 @@ public class NPC : MonoBehaviour, IInteractable
         {
             StopCoroutine(idleRoutine);
             idleRoutine = null;
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (curState == State.Talk)
+        {
+            speechBubble.transform.position = Camera.main.WorldToScreenPoint(transform.position + offset);
         }
     }
 }

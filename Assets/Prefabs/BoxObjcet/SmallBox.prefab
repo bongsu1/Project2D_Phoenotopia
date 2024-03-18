@@ -171,5 +171,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bbd0213eba729c498de2ecab1c7aefd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 1
   rigid: {fileID: 6425462371136195914}
+  spriteRenderer: {fileID: 2174399238419569459}
+  sprites:
+  - {fileID: 21300000, guid: ae44c727d6537eb4a9e7fac304806de7, type: 3}
+  maxHp: 1
+  hp: 0
+  mass: 0

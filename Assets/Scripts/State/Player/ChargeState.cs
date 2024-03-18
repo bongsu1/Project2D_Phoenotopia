@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ChargeState : PlayerState
 {
+    private bool isChargeAttackSuccesed;
+
     public override void Enter()
     {
         player.Animator.Play("Charging");
@@ -48,10 +50,14 @@ public class ChargeState : PlayerState
             }
         }
         // 차지가 완료되고 키를 때면 차지공격
-        else if (player.IsGrounded && !player.Input.actions["Attack"].IsPressed() && player.Input.actions["Attack"].triggered && player.ChargeTime >= 1f)
+        else if (player.IsGrounded && !player.Input.actions["Attack"].IsPressed() && player.Input.actions["Attack"].triggered && (player.ChargeTime >= 1f) && (Manager.Data.Stamina >= player.UseStamina))
         {
             player.Animator.Play("ChargeAttack");
             player.Input.actions["Attack"].Disable();
+
+            isChargeAttackSuccesed = true;
+            Manager.Data.Stamina -= player.UseStamina;
+            Manager.Data.StartStaminaRegenRoutine();
         }
     }
 
@@ -63,6 +69,7 @@ public class ChargeState : PlayerState
     public override void Exit()
     {
         player.ChargeTime = 0;
+        isChargeAttackSuccesed = false;
         player.Input.actions["Attack"].Enable();
     }
 
@@ -79,8 +86,8 @@ public class ChargeState : PlayerState
         {
             ChangeState(Player.State.Jump);
         }
-        // 차지 완료가 되기 전에 때면 취소
-        else if (!player.Input.actions["Attack"].IsPressed() && player.ChargeTime < 1f)
+        // 차지 완료가 되기 전에 때면 취소 + 스태미나가 부족해도 취소
+        else if (!isChargeAttackSuccesed && !player.Input.actions["Attack"].IsPressed() && (player.ChargeTime < 1f || (Manager.Data.Stamina < player.UseStamina)))
         {
             ChangeState(Player.State.Normal);
         }

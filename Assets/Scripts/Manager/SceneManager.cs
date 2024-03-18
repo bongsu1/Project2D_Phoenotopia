@@ -43,7 +43,6 @@ public class SceneManager : Singleton<SceneManager>
         BaseScene prevScene = GetCurScene();
         if (prevScene.name == "TitleScene")
         {
-            Debug.Log("Start");
             isStart = true;
         }
         yield return FadeOut();
@@ -61,10 +60,7 @@ public class SceneManager : Singleton<SceneManager>
         Time.timeScale = 0f;
 
         AsyncOperation oper = UnitySceneManager.LoadSceneAsync(sceneName);
-        while (oper.isDone == false)
-        {
-            yield return null;
-        }
+        yield return new WaitUntil(() => oper.isDone);
 
         Manager.UI.EnsureEventSystem();
 
@@ -85,8 +81,8 @@ public class SceneManager : Singleton<SceneManager>
     IEnumerator FadeOut()
     {
         float rate = 0;
-        Color fadeOutColor = isStart ? new Color(fade.color.r, fade.color.g, fade.color.b, 1f) : Color.black;
-        Color fadeInColor = isStart ? new Color(fade.color.r, fade.color.g, fade.color.b, 0f) : new Color(0f, 0f, 0f, 0f);
+        Color fadeOutColor = isStart ? Color.white : Color.black;
+        Color fadeInColor = isStart ? new Color(1f, 1f, 1f, 0f) : new Color(0f, 0f, 0f, 0f);
 
         while (rate <= 1)
         {
@@ -99,8 +95,8 @@ public class SceneManager : Singleton<SceneManager>
     IEnumerator FadeIn()
     {
         float rate = 0;
-        Color fadeOutColor = isStart ? new Color(fade.color.r, fade.color.g, fade.color.b, 1f) : Color.black;
-        Color fadeInColor = isStart ? new Color(fade.color.r, fade.color.g, fade.color.b, 0f) : new Color(0f, 0f, 0f, 0f);
+        Color fadeOutColor = isStart ? Color.white : Color.black;
+        Color fadeInColor = isStart ? new Color(1f, 1f, 1f, 0f) : new Color(0f, 0f, 0f, 0f);
 
         while (rate <= 1)
         {

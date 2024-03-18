@@ -9,6 +9,9 @@ public class BattleScene : BaseScene
     public override IEnumerator LoadingRoutine()
     {
         exitPoint = 0;
+        statusRender.SetHp();
+        Manager.Data.RefillStamina();
+        yield return null;
         spawner.SpawnMonster();
         yield return null;
     }

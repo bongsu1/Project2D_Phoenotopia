@@ -11,8 +11,11 @@ public class DieScene : BaseScene
 
     public UnityEvent OnPressXButton;
 
+    private int count = 1;
+
     public override IEnumerator LoadingRoutine()
     {
+        count = 1;
         exitPoint = 0;
         yield return null;
         Player.EndGame();
@@ -30,6 +33,7 @@ public class DieScene : BaseScene
         {
             TitleSceneLoad();
             OnPressXButton?.Invoke();
+            count--;
         }
     }
 }

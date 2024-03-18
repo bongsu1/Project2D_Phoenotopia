@@ -51,6 +51,9 @@ public class UseState : PlayerState
             rotateDir = 0f;
             player.Animator.Play("SlingshotEnd");
             player.Shot();
+
+            Manager.Data.Stamina -= player.UseStamina;
+            Manager.Data.StartStaminaRegenRoutine();
         }
     }
 

@@ -10,8 +10,12 @@ public class TitleScene : BaseScene
     public UnityEvent OnXButtonPress;
     [SerializeField] Image textImage;
 
+    private int count = 1;
+
     public override IEnumerator LoadingRoutine()
     {
+        count = 1;
+        Manager.Data.Hp = 30;
         yield return null;
     }
 
@@ -24,10 +28,11 @@ public class TitleScene : BaseScene
 
     private void OnAttack(InputValue value)
     {
-        if (value.isPressed)
+        if (value.isPressed && count > 0)
         {
             OnXButtonPress?.Invoke();
             GameStart();
+            count--;
         }
     }
 }

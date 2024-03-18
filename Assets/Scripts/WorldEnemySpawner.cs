@@ -59,7 +59,11 @@ public class WorldEnemySpawner : MonoBehaviour
     [ContextMenu("Spawn Stop")]
     public void StopSpawnRotine()
     {
+        if (spawnRoutine == null)
+            return;
+
         StopCoroutine(spawnRoutine);
+        spawnRoutine = null;
     }
 
     private void OnDrawGizmos()

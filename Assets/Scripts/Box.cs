@@ -4,12 +4,26 @@ using UnityEngine;
 
 public class Box : MonoBehaviour, IDamagable
 {
-    [SerializeField] int hp;
     [SerializeField] Rigidbody2D rigid;
+    [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] Sprite[] sprites;
+    [SerializeField] int maxHp;
+    [SerializeField] int hp;
+    [SerializeField] int mass;
+
+    public int Mass => mass;
+
+    private void Start()
+    {
+        hp = maxHp;
+    }
 
     public void TakeDamage(int damage)
     {
-        //hp -= damage;
+        hp -= damage;
+
+        int index = sprites.Length - (int)((float)sprites.Length * hp / maxHp) - 1;
+        spriteRenderer.sprite = sprites[index];
 
         if (hp <= 0)
         {

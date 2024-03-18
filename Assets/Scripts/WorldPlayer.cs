@@ -13,6 +13,7 @@ public class WorldPlayer : MonoBehaviour
     [SerializeField] float runSpeed;
     [SerializeField] LayerMask entranceLayer; // ¿‘±∏
     [SerializeField] LayerMask enemyLayer;
+    [SerializeField] float useStamina;
 
     public UnityEvent OnAttackKeyPress;
     public UnityEvent<Vector2> OnEnemyTouch;
@@ -24,7 +25,21 @@ public class WorldPlayer : MonoBehaviour
 
     private void Update()
     {
-        moveSpeed = input.actions["Run"].IsPressed() ? runSpeed : walkSpeed;
+        moveSpeed = input.actions["Run"].IsPressed() && Manager.Data.Stamina > 0f ? runSpeed : walkSpeed;
+
+        if (input.actions["Run"].IsPressed() && input.actions["Run"].triggered)
+        {
+            Manager.Data.Stamina -= useStamina;
+            Manager.Data.StopStaminaRegenRoutine();
+        }
+        else if (input.actions["Run"].IsPressed() && moveDir.magnitude > 0)
+        {
+            Manager.Data.Stamina -= Time.deltaTime;
+        }
+        else if (!input.actions["Run"].IsPressed() && input.actions["Run"].triggered)
+        {
+            Manager.Data.StartStaminaRegenRoutine();
+        }
 
         if (onEnemyTouch || (moveDir.magnitude < 0.1f))
         {

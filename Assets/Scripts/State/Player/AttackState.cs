@@ -9,6 +9,7 @@ public class AttackState : PlayerState
 
     public override void Enter()
     {
+        Manager.Data.Stamina -= player.UseStamina;
         if (player.IsGrounded)
         {
             player.Animator.Play("Attack");
