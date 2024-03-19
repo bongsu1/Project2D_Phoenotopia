@@ -1,13 +1,14 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SoundManager : Singleton<SoundManager>
 {
     [SerializeField] AudioSource bgmSource;
-    [SerializeField] AudioSource sfxSource;
+    [SerializeField] AudioSource[] sfxSource;
 
     public float BGMVolme { get { return bgmSource.volume; } set { bgmSource.volume = value; } }
-    public float SFXVolme { get { return sfxSource.volume; } set { sfxSource.volume = value; } }
+    public float SFXVolme { get { return sfxSource[0].volume; } set { for (int i = 0; i < sfxSource.Length; i++) sfxSource[i].volume = value; } }
 
     public void PlayBGM(AudioClip clip)
     {
@@ -29,14 +30,42 @@ public class SoundManager : Singleton<SoundManager>
 
     public void PlaySFX(AudioClip clip)
     {
-        sfxSource.PlayOneShot(clip);
+        for (int i = 0; i < sfxSource.Length; i++)
+        {
+            if (sfxSource[i].isPlaying)
+                continue;
+
+            sfxSource[i].PlayOneShot(clip);
+            break;
+        }
     }
 
     public void StopSFX()
     {
-        if (sfxSource.isPlaying == false)
-            return;
+        for (int i = 0; i < sfxSource.Length; i++)
+        {
+            if (sfxSource[i].isPlaying == false)
+                continue;
 
-        sfxSource.Stop();
+            sfxSource[i].Stop();
+        }
+    }
+
+    public void FadeOutSFX()
+    {
+        StartCoroutine(StopSFXRoutine());
+    }
+
+    IEnumerator StopSFXRoutine()
+    {
+        float rate = 0;
+        float startVol = SFXVolme;
+        while (rate < 0.5f)
+        {
+            rate += Time.deltaTime;
+            float curVol = Mathf.Lerp(startVol, 0, rate * 2);
+            SFXVolme = curVol;
+            yield return null;
+        }
     }
 }

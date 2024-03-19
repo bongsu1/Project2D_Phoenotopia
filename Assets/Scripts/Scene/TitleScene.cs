@@ -10,13 +10,19 @@ public class TitleScene : BaseScene
     public UnityEvent OnXButtonPress;
     [SerializeField] Image textImage;
 
-    private int count = 1;
+    private int count;
 
     public override IEnumerator LoadingRoutine()
     {
+        yield return null;
+    }
+
+    protected override void Start()
+    {
+        exitPoint = 0;
         count = 1;
         Manager.Data.Hp = 30;
-        yield return null;
+        base.Start();
     }
 
     // 게임씬으로 전환
@@ -26,13 +32,16 @@ public class TitleScene : BaseScene
         textImage.gameObject.SetActive(false);
     }
 
-    private void OnAttack(InputValue value)
+    private void OnX(InputValue value)
     {
         if (value.isPressed && count > 0)
         {
             OnXButtonPress?.Invoke();
             GameStart();
             count--;
+            Manager.Sound.StopBGM();
+            Manager.Sound.PlaySFX(audioClips[1]);
+            Manager.Sound.FadeOutSFX();
         }
     }
 }

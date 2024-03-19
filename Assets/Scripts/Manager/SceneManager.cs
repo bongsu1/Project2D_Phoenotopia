@@ -48,7 +48,6 @@ public class SceneManager : Singleton<SceneManager>
         yield return FadeOut();
 
         Manager.Pool.ClearPool();
-        Manager.Sound.StopSFX();
         Manager.UI.ClearPopUpUI();
         Manager.UI.ClearWindowUI();
         Manager.UI.CloseInGameUI();
@@ -67,6 +66,7 @@ public class SceneManager : Singleton<SceneManager>
         BaseScene curScene = GetCurScene();
         curScene.ExitPoint = exitPoint;           // 나온지점 전달
         curScene.BattlePosition = battlePosition; // 몬스터와 싸운 지점 전달
+        Manager.Sound.StopSFX();
         yield return curScene.LoadingRoutine();
 
         Time.timeScale = 1f;

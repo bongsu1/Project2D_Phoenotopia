@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -13,10 +11,16 @@ public class DieScene : BaseScene
 
     private int count = 1;
 
+    protected override void Start()
+    {
+        Manager.Sound.PlaySFX(audioClips[0]);
+        Manager.Sound.BGMVolme = bgmVolume;
+        Manager.Sound.SFXVolme = sfxVolume;
+    }
+
     public override IEnumerator LoadingRoutine()
     {
         count = 1;
-        exitPoint = 0;
         yield return null;
         Player.EndGame();
         yield return null;
@@ -34,6 +38,7 @@ public class DieScene : BaseScene
             TitleSceneLoad();
             OnPressXButton?.Invoke();
             count--;
+            Manager.Sound.PlaySFX(audioClips[1]);
         }
     }
 }

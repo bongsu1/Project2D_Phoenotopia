@@ -23,6 +23,8 @@ public class WorldPlayer : MonoBehaviour
     private bool onEntrance;
     private bool onEnemyTouch;
 
+    public PlayerInput Input => input;
+
     private void Update()
     {
         moveSpeed = input.actions["Run"].IsPressed() && Manager.Data.Stamina > 0f ? runSpeed : walkSpeed;

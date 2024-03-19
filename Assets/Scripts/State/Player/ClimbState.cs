@@ -7,6 +7,7 @@ public class ClimbState : PlayerState
 {
     public override void Enter()
     {
+        Manager.Data.StopStaminaRegenRoutine();
         player.Rigid.gravityScale = 0f;
         player.Animator.Play("Climb");
     }

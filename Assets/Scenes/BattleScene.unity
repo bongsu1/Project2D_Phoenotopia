@@ -298,6 +298,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: StatusRender
       objectReference: {fileID: 0}
+    - target: {fileID: 3407371395000044617, guid: f797e190cdb31b8448d3b557ec69bb54, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3407371395000044617, guid: f797e190cdb31b8448d3b557ec69bb54, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4231090926139962996, guid: f797e190cdb31b8448d3b557ec69bb54, type: 3}
       propertyPath: m_LocalPosition.x
       value: 960
@@ -368,6 +376,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 190336478}
+  - component: {fileID: 190336479}
   - component: {fileID: 190336477}
   m_Layer: 0
   m_Name: BattleScene
@@ -392,6 +401,12 @@ MonoBehaviour:
   startPoint: []
   exitPoint: 0
   battlePosition: {x: 0, y: 0}
+  escapeMenu: {fileID: 0}
+  input: {fileID: 0}
+  audioClips:
+  - {fileID: 8300000, guid: 6108bbb6240f1b44e9a86c05b1ae40a9, type: 3}
+  bgmVolume: 0.3
+  sfxVolume: 0.1
   spawner: {fileID: 776789600}
 --- !u!4 &190336478
 Transform:
@@ -412,6 +427,36 @@ Transform:
   - {fileID: 131883125}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &190336479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 190336476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: d50dddbaa28d8254a8f6d509a7ed10b3, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: UI
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &200586191
 GameObject:
   m_ObjectHideFlags: 0

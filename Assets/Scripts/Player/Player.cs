@@ -25,6 +25,7 @@ public class Player : MonoBehaviour, IDamagable
     [SerializeField] Transform slingshotAim;
     [SerializeField] PlayerHeadCheck headCheck;
     [SerializeField] PixelPerfectCamera pixel;
+    [SerializeField] PlayerEffect effect;
 
     [Header("status")]
     [SerializeField] int damage;
@@ -131,6 +132,9 @@ public class Player : MonoBehaviour, IDamagable
     public bool OnHit { get { return onHit; } set { onHit = value; } }
     public bool OnCeiling => onCeiling;
 
+    public UnityEvent OnWakeUp;
+    public UnityEvent OnNoramalAttack;
+
     private void Start()
     {
         stateMachine.AddState(State.Sleep, new SleepState(this));
@@ -236,6 +240,11 @@ public class Player : MonoBehaviour, IDamagable
                 damagable.TakeDamage(damage);
                 damagable.Knockback(transform.position, hitPower);
             }
+        }
+
+        if (size > 0)
+        {
+            effect.StartHitEffectRoutine(colliders[0].ClosestPoint(attackPoint.position) + new Vector2(transform.localScale.x * .25f, 0));
         }
     }
 

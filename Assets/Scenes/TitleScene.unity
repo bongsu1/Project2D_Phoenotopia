@@ -332,7 +332,7 @@ MonoBehaviour:
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
+  m_DefaultActionMap: UI
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!4 &127352314
@@ -362,9 +362,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 954aa0eca4ad3c94da104538d4ac42a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  statusRender: {fileID: 0}
   startPoint: []
   exitPoint: 0
   battlePosition: {x: 0, y: 0}
+  escapeMenu: {fileID: 0}
+  input: {fileID: 0}
+  audioClips:
+  - {fileID: 8300000, guid: 7e78e4b073db43e4db3534930b93773e, type: 3}
+  - {fileID: 8300000, guid: 78b27f6dfa4cea847876f490a0e78792, type: 3}
+  bgmVolume: 0.3
+  sfxVolume: 0.1
   OnXButtonPress:
     m_PersistentCalls:
       m_Calls:

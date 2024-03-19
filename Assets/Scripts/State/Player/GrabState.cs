@@ -79,7 +79,9 @@ public class GrabState : PlayerState
     public override void Exit()
     {
         player.Animator.speed = 1f;
-        boxRigid.gravityScale = 1f;
+
+        if (player.Box != null)
+            boxRigid.gravityScale = 1f;
     }
 
     private void Move()
