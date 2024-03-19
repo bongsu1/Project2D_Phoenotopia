@@ -17,6 +17,7 @@ public class SleepState : PlayerState
         {
             player.Input.actions["Jump"].Disable();
             player.Animator.Play("WakeUp");
+            player.SFX.PlaySFX(PlayerSoundManager.SFX.WakeUp);
         }
     }
 

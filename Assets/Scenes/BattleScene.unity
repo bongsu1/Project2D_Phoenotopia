@@ -405,8 +405,8 @@ MonoBehaviour:
   input: {fileID: 0}
   audioClips:
   - {fileID: 8300000, guid: 6108bbb6240f1b44e9a86c05b1ae40a9, type: 3}
-  bgmVolume: 0.3
-  sfxVolume: 0.1
+  bgmVolume: 0.15
+  sfxVolume: 0.3
   spawner: {fileID: 776789600}
 --- !u!4 &190336478
 Transform:

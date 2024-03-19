@@ -26,6 +26,7 @@ public class Player : MonoBehaviour, IDamagable
     [SerializeField] PlayerHeadCheck headCheck;
     [SerializeField] PixelPerfectCamera pixel;
     [SerializeField] PlayerEffect effect;
+    [SerializeField] PlayerSoundManager sfx;
 
     [Header("status")]
     [SerializeField] int damage;
@@ -109,6 +110,7 @@ public class Player : MonoBehaviour, IDamagable
     public Transform SlingshotAim => slingshotAim;
     public PhysicsMaterial2D PlayerMaterial => playerMaterial;
     public PixelPerfectCamera Pixel => pixel;
+    public PlayerSoundManager SFX => sfx;
 
     public float Accel => accel;
     public float JumpSpeed => jumpSpeed;
@@ -245,6 +247,7 @@ public class Player : MonoBehaviour, IDamagable
         if (size > 0)
         {
             effect.StartHitEffectRoutine(colliders[0].ClosestPoint(attackPoint.position) + new Vector2(transform.localScale.x * .25f, 0));
+            sfx.PlaySFX(PlayerSoundManager.SFX.Hit);
         }
     }
 

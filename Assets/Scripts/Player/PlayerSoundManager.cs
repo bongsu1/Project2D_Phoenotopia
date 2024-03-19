@@ -4,11 +4,11 @@ public class PlayerSoundManager : MonoBehaviour
 {
     [SerializeField] AudioClip[] audioClips;
 
-    public enum SFX { WakeUp, Jump, Run, NormalAttack,AirAttack, ChargeAttack, Hit,
-        Shot, Roll, Grab, Pull, Push, Hurt, Death = 14 }
+    public enum SFX { WakeUp, NormalAttack, AirAttack, ChargeAttack, Hit, Shot, Roll, Hurt }
 
-    public void PlaySFX(int index)
+    public void PlaySFX(SFX sfx)
     {
-        Manager.Sound.PlaySFX(audioClips[index]);
+        Manager.Sound.PlaySFX(audioClips[(int)sfx]);
+        Debug.Log(sfx);
     }
 }

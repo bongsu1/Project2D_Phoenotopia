@@ -20,8 +20,7 @@ public class Box : MonoBehaviour, IDamagable
 
     public void TakeDamage(int damage)
     {
-        hp -= damage;
-
+        hp--;
         int index = sprites.Length - (int)((float)sprites.Length * hp / maxHp) - 1;
         spriteRenderer.sprite = sprites[index];
 

@@ -31695,7 +31695,7 @@ MonoBehaviour:
   audioClips:
   - {fileID: 8300000, guid: 7a6003027db237a458d5e966e4f61120, type: 3}
   bgmVolume: 0.3
-  sfxVolume: 0.1
+  sfxVolume: 0.3
   player: {fileID: 523515639}
   battlePoint: {fileID: 1279872598}
   spawner: {fileID: 3261617589857571884}

@@ -21,7 +21,7 @@ public class TitleScene : BaseScene
     {
         exitPoint = 0;
         count = 1;
-        Manager.Data.Hp = 30;
+        Manager.Data.Hp = Manager.Data.MaxHp;
         base.Start();
     }
 

@@ -136,7 +136,7 @@ public class NPC : MonoBehaviour, IInteractable
         //speechBubble.transform.position = Camera.main.WorldToScreenPoint(transform.position + offset);
         curState = State.Talk;
         yield return waitUntil;
-        talkScript.text = "Hi, nice meet you";
+        talkScript.text = "Hi";
         yield return new WaitForSeconds(.1f);
         yield return waitUntil;
         talkScript.text = "Jump Key 'Z'\nAttack key 'X'";

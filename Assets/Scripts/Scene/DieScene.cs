@@ -13,9 +13,7 @@ public class DieScene : BaseScene
 
     protected override void Start()
     {
-        Manager.Sound.PlaySFX(audioClips[0]);
-        Manager.Sound.BGMVolme = bgmVolume;
-        Manager.Sound.SFXVolme = sfxVolume;
+        Manager.Sound.StopBGM();
     }
 
     public override IEnumerator LoadingRoutine()
@@ -23,6 +21,10 @@ public class DieScene : BaseScene
         count = 1;
         yield return null;
         Player.EndGame();
+        yield return null;
+        Manager.Sound.BGMVolme = bgmVolume;
+        Manager.Sound.SFXVolme = sfxVolume;
+        Manager.Sound.PlaySFX(audioClips[0]);
         yield return null;
     }
 

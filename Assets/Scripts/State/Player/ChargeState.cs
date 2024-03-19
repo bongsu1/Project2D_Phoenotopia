@@ -54,6 +54,7 @@ public class ChargeState : PlayerState
         {
             player.Animator.Play("ChargeAttack");
             player.Input.actions["Attack"].Disable();
+            player.SFX.PlaySFX(PlayerSoundManager.SFX.ChargeAttack);
 
             isChargeAttackSuccesed = true;
             Manager.Data.Stamina -= player.UseStamina;

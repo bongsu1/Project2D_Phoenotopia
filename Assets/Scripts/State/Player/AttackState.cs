@@ -13,10 +13,12 @@ public class AttackState : PlayerState
         if (player.IsGrounded)
         {
             player.Animator.Play("Attack");
+            player.SFX.PlaySFX(PlayerSoundManager.SFX.NormalAttack);
         }
         else
         {
             player.Animator.Play("JumpAttack");
+            player.SFX.PlaySFX(PlayerSoundManager.SFX.AirAttack);
         }
     }
 

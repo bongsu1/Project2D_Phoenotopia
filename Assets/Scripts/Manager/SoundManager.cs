@@ -5,10 +5,10 @@ using UnityEngine;
 public class SoundManager : Singleton<SoundManager>
 {
     [SerializeField] AudioSource bgmSource;
-    [SerializeField] AudioSource[] sfxSource;
+    [SerializeField] AudioSource sfxSource;
 
     public float BGMVolme { get { return bgmSource.volume; } set { bgmSource.volume = value; } }
-    public float SFXVolme { get { return sfxSource[0].volume; } set { for (int i = 0; i < sfxSource.Length; i++) sfxSource[i].volume = value; } }
+    public float SFXVolme { get { return sfxSource.volume; } set { sfxSource.volume = value; } }
 
     public void PlayBGM(AudioClip clip)
     {
@@ -30,25 +30,15 @@ public class SoundManager : Singleton<SoundManager>
 
     public void PlaySFX(AudioClip clip)
     {
-        for (int i = 0; i < sfxSource.Length; i++)
-        {
-            if (sfxSource[i].isPlaying)
-                continue;
-
-            sfxSource[i].PlayOneShot(clip);
-            break;
-        }
+        sfxSource.PlayOneShot(clip);
     }
 
     public void StopSFX()
     {
-        for (int i = 0; i < sfxSource.Length; i++)
-        {
-            if (sfxSource[i].isPlaying == false)
-                continue;
+        if (sfxSource.isPlaying == false)
+            return;
 
-            sfxSource[i].Stop();
-        }
+        sfxSource.Stop();
     }
 
     public void FadeOutSFX()

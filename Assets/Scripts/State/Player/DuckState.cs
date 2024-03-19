@@ -9,6 +9,7 @@ public class DuckState : PlayerState
         if (Mathf.Abs(player.Rigid.velocity.x) > 2.5f)
         {
             player.Animator.Play("Roll");
+            player.SFX.PlaySFX(PlayerSoundManager.SFX.Roll);
         }
         else
         {

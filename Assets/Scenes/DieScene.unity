@@ -843,7 +843,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 81de8d9e20e2f434c8cd72032e36d16f, type: 3}
   - {fileID: 8300000, guid: ca510bd1f1634a348bca2193382350ce, type: 3}
   bgmVolume: 0.3
-  sfxVolume: 0.1
+  sfxVolume: 0.2
   Player: {fileID: 1012698016}
   OnPressXButton:
     m_PersistentCalls:

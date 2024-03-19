@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f774f6834013e054d8115360f76fb28b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 30
-  hp: 30
+  maxHp: 20
+  hp: 20
   maxStamina: 6
   stamina: 6

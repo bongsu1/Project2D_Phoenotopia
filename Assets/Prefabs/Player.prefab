@@ -226,6 +226,7 @@ Transform:
   - {fileID: 8310910540095977735}
   - {fileID: 204560657943842761}
   - {fileID: 9162929968766733796}
+  - {fileID: 7591066343057769790}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2406644689471441613
@@ -426,6 +427,7 @@ MonoBehaviour:
   headCheck: {fileID: 5573018488408686054}
   pixel: {fileID: 0}
   effect: {fileID: 151036727426175496}
+  sfx: {fileID: 6479626252429700583}
   damage: 1
   useStamina: 2
   walkSpeed: 6
@@ -684,6 +686,60 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 576
+--- !u!1 &5438028265755171093
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7591066343057769790}
+  - component: {fileID: 6479626252429700583}
+  m_Layer: 0
+  m_Name: PlayerSound
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7591066343057769790
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5438028265755171093}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.0063149, y: 0.3572731, z: -0.008246432}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2751728919229232011}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6479626252429700583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5438028265755171093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ce6d86ef6ffd3545885ed04d6ccaac2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClips:
+  - {fileID: 8300000, guid: de339872a63f5b44fa81353a82feede5, type: 3}
+  - {fileID: 8300000, guid: 8785a5914b1a60a41a6f0a98d6dc68d0, type: 3}
+  - {fileID: 8300000, guid: 3f6da4d2530ffc743bcced65dc7edd4e, type: 3}
+  - {fileID: 8300000, guid: ab70a95c18c23824baeea04b67f29ce4, type: 3}
+  - {fileID: 8300000, guid: 52d0a507eb1e5bf40a4a81af6c2f8848, type: 3}
+  - {fileID: 8300000, guid: d733893f7b5fa0b4f8b5084d0ad0f2bb, type: 3}
+  - {fileID: 8300000, guid: 5a479b0a561070248a41807dbea72540, type: 3}
+  - {fileID: 8300000, guid: 4bdb764543d289d4bbb345654450d4c5, type: 3}
+  - {fileID: 8300000, guid: 1de96b31e17bb174ca2e54c1d7926f9c, type: 3}
 --- !u!1 &6324592856401472642
 GameObject:
   m_ObjectHideFlags: 0

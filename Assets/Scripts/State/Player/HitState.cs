@@ -6,6 +6,7 @@ public class HitState : PlayerState
 {
     public override void Enter()
     {
+        player.SFX.PlaySFX((PlayerSoundManager.SFX)(Random.Range(0, 2) + (int)PlayerSoundManager.SFX.Hurt));
         if (player.TakeHitPower > 9)
         {
             player.PlayerMaterial.bounciness = player.Bounciness;
