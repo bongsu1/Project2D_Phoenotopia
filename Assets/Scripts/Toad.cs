@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Toad : Enemy // 개구리 몬스터
@@ -25,7 +24,7 @@ public class Toad : Enemy // 개구리 몬스터
     private WaitForSeconds holdWait;
     private bool onAttack;
     private bool onHit;
-    
+
     private void Start()
     {
         attackWait = new WaitForSeconds(attackCool);
@@ -136,7 +135,7 @@ public class Toad : Enemy // 개구리 몬스터
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(onAttack && (((1 << collision.gameObject.layer) & PlayerLayer) != 0))
+        if (onAttack && (((1 << collision.gameObject.layer) & PlayerLayer) != 0))
         {
             player.TakeDamage(damage);
             player.Knockback(transform.position, hitPower);

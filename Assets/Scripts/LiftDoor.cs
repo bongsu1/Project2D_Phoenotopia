@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -25,7 +24,7 @@ public class LiftDoor : MonoBehaviour
         while (Vector2.Distance(transform.position, openPos) > 0.01f)
         {
             float nextYPos = Mathf.Lerp(transform.position.y, openPos.y, moveSpeed);
-            transform.position =new Vector2(transform.position.x, nextYPos);
+            transform.position = new Vector2(transform.position.x, nextYPos);
             yield return null;
         }
         isPlay = false;

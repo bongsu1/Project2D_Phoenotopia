@@ -1,9 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Resources;
-using UnityEngine;
-
-// 계속 구현이 안되면 뺄예정 // 해결
 public class SleepState : PlayerState
 {
     public override void Enter()

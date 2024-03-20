@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DuckState : PlayerState
@@ -41,7 +39,7 @@ public class DuckState : PlayerState
     private void Move()
     {
         // Run 키를 누를 때 대시(구르기) 추가
-        if(Mathf.Abs(player.Rigid.velocity.x)> 2.1f)
+        if (Mathf.Abs(player.Rigid.velocity.x) > 2.1f)
         {
             player.Animator.Play("Roll");
         }
