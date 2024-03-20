@@ -29697,22 +29697,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 6479626252429700583, guid: 86485f5d85fc13d4386d29e084636a25, type: 3}
-      propertyPath: audioClips.Array.size
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6479626252429700583, guid: 86485f5d85fc13d4386d29e084636a25, type: 3}
-      propertyPath: audioClips.Array.data[7]
-      value: 
-      objectReference: {fileID: 8300000, guid: 4bdb764543d289d4bbb345654450d4c5, type: 3}
-    - target: {fileID: 6479626252429700583, guid: 86485f5d85fc13d4386d29e084636a25, type: 3}
-      propertyPath: audioClips.Array.data[8]
-      value: 
-      objectReference: {fileID: 8300000, guid: 1de96b31e17bb174ca2e54c1d7926f9c, type: 3}
-    - target: {fileID: 6479626252429700583, guid: 86485f5d85fc13d4386d29e084636a25, type: 3}
-      propertyPath: audioClips.Array.data[9]
-      value: 
-      objectReference: {fileID: 8300000, guid: 0f98d2bc2f80cc5489807187a7558e15, type: 3}
     - target: {fileID: 7089408175337304285, guid: 86485f5d85fc13d4386d29e084636a25, type: 3}
       propertyPath: pixel
       value: 

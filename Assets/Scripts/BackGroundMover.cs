@@ -8,7 +8,7 @@ public class BackGroundMover : MonoBehaviour
 
     [SerializeField] float moveSpeed;
 
-    private void Update()
+    private void FixedUpdate()
     {
         float playerCenterDistance = Mathf.Abs(player.transform.position.x - Camera.main.transform.position.x);
         if (playerCenterDistance > 0.01f)
