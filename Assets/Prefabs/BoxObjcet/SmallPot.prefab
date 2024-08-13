@@ -172,6 +172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigid: {fileID: 3420215535143084048}
+  boxColl: {fileID: 4801078055545325533}
   spriteRenderer: {fileID: 2966785972936615074}
   sprites:
   - {fileID: 21300000, guid: 6f2148608d0fc8d4e92816cbb90236d2, type: 3}

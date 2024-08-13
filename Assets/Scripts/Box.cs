@@ -3,13 +3,22 @@ using UnityEngine;
 public class Box : MonoBehaviour, IDamagable
 {
     [SerializeField] Rigidbody2D rigid;
+    public Rigidbody2D Rigid { get { return rigid; } }
+
+    [SerializeField] BoxCollider2D boxColl;
+    public BoxCollider2D BoxColl { get { return boxColl; } }
+
     [SerializeField] SpriteRenderer spriteRenderer;
+    public SpriteRenderer SpriteRender { get { return spriteRenderer; } }
+
     [SerializeField] Sprite[] sprites;
     [SerializeField] int maxHp;
     [SerializeField] int hp;
-    [SerializeField] int mass;
 
-    public int Mass => mass;
+    [SerializeField] int mass;
+    public int Mass { get { return mass; } }
+
+    [SerializeField] bool canNockback;
 
     private void Start()
     {
@@ -30,6 +39,9 @@ public class Box : MonoBehaviour, IDamagable
 
     public void Knockback(Vector2 hitPoint, float hitPower)
     {
+        if (!canNockback)
+            return;
+
         float direction = Mathf.Sign(transform.position.x - hitPoint.x);
         Vector2 knockback = new Vector2(direction, 0.5f).normalized;
         rigid.velocity = knockback * hitPower;

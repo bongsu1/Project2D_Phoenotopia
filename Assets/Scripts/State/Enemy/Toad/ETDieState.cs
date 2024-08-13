@@ -10,8 +10,5 @@ public class ETDieState : ToadState
         // 아이템 떨구기
     }
 
-    public ETDieState(Toad toad)
-    {
-        this.toad = toad;
-    }
+    public ETDieState(Toad toad) : base(toad) { }
 }

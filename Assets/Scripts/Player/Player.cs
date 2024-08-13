@@ -11,32 +11,59 @@ public class Player : MonoBehaviour, IDamagable
 
     [Header("Component")]
     [SerializeField] Rigidbody2D rigid;
+    public Rigidbody2D Rigid { get { return rigid; } }
+
     [SerializeField] Animator animator;
+    public Animator Animator { get { return animator; } }
+
     [SerializeField] PlayerInput input;
+    public PlayerInput Input { get { return input; } }
+
     [SerializeField] BoxCollider2D playercoll; // 숙이는 자세에서 콜라이더 사이즈를 줄이기 위해 BoxCollider2D가 필요
+    public BoxCollider2D PlayerColl { get { return playercoll; } }
+
     [SerializeField] Transform attackPoint; // 공격범위 위치
     [SerializeField] Transform grabPoint; // 상자를 잡는 위치
     [SerializeField] Transform interactPoint; // NPC 상호작용 포인트
+
     [SerializeField] Transform slingshotAim;
+    public Transform SlingshotAim { get { return slingshotAim; } }
+
     [SerializeField] PlayerHeadCheck headCheck;
+
     [SerializeField] PixelPerfectCamera pixel;
+    public PixelPerfectCamera Pixel { get { return pixel; } }
+
     [SerializeField] PlayerEffect effect;
+
     [SerializeField] PlayerSoundManager sfx;
+    public PlayerSoundManager SFX { get { return sfx; } }
 
     [Header("status")]
     [SerializeField] int damage;
+
     [SerializeField] float useStamina;
+    public float UseStamina { get { return useStamina; } }
 
     [Header("Normal")]
     [SerializeField] float walkSpeed;
     [SerializeField] float runSpeed;
+
     [SerializeField] float jumpSpeed;
+    public float JumpSpeed { get { return jumpSpeed; } }
 
     [Header("State move speed")]
     [SerializeField] float duckMoveSpeed;
+    public float DuckMoveSpeed { get { return duckMoveSpeed; } }
+
     [SerializeField] float climbMoveSpeed;
-    [SerializeField] float ChargerMoveSpeed;
+    public float ClimbMoveSpeed { get { return climbMoveSpeed; } }
+
+    [SerializeField] float chargedMoveSpeed;
+    public float ChargedMoveSpeed { get { return chargedMoveSpeed; } }
+
     [SerializeField] float grabMoveSpeed;
+    public float GrabMoveSpeed { get { return grabMoveSpeed; } }
 
     [Header("Attack")]
     [SerializeField] float normalAttackRange;
@@ -46,20 +73,32 @@ public class Player : MonoBehaviour, IDamagable
 
     [Header("Carry")]
     [SerializeField] float grabRange;
+
     [SerializeField] float throwPower;
+    public float ThrowPower { get { return throwPower; } }
 
     [Header("Use")]
     [SerializeField] float aimSpeed;
+    public float AimSpeed { get { return aimSpeed; } }
+
     [SerializeField] float slingshotPower;
 
     [Header("Physics")]
     [SerializeField] float accel;
+    public float Accel { get { return accel; } }
+
     [SerializeField] float multiplier;
     [SerializeField] float lowJumpMultiplier;
     [SerializeField] float maxFall;
+
     [SerializeField] float takeHitPower;
+    public float TakeHitPower { get { return takeHitPower; } set { takeHitPower = value; } }
+
     [SerializeField] PhysicsMaterial2D playerMaterial;
+    public PhysicsMaterial2D PlayerMaterial { get { return playerMaterial; } }
+
     [SerializeField] float bounciness;
+    public float Bounciness { get { return bounciness; } }
 
     [Header("LayerMask")]
     [SerializeField] LayerMask groundLayer;
@@ -75,60 +114,60 @@ public class Player : MonoBehaviour, IDamagable
     [SerializeField] Bullet slingshotBullet;
 
     Vector2 moveDir;
+    public Vector2 MoveDir { get { return moveDir; } }
+
+    private float normalSpeed;
+    public float NormalSpeed { get { return normalSpeed; } }
+
     private float moveSpeed;
+    public float MoveSpeed { get { return moveSpeed; } set { moveSpeed = value; } }
+
     private float chargeTime;
+    public float ChargeTime { get { return chargeTime; } set { chargeTime = value; } }
+
     private float attackRange;
+
     private float hitPower;
+    public float HitPower { get { return hitPower; } }
+
     private float doorXPosition;
     private int groundCount;
     private int ladderCount;
+
     private bool isGrounded;
+    public bool IsGrounded { get { return isGrounded; } }
+
     private bool isDucking;
+    public bool IsDucking { get { return isDucking; } }
+
     private bool isLadder;
+    public bool IsLadder { get { return isLadder; } }
+
     private bool onNPC;
+    public bool OnNPC { get { return onNPC; } }
+
     private bool onTalk;
+    public bool OnTalk { get { return onTalk; } set { onTalk = value; } }
+
     private bool onDoor;
+    public bool OnDoor { get { return onDoor; } }
+
     private bool onEnter;
+    public bool OnEnter { get { return onEnter; } }
+
     private bool onExit;
     private bool onHit;
-    private bool onCeiling; // 머리위에 천장체크
-    Collider2D platformcoll;
-    Box box;
-
-    // Property
-    public Animator Animator => animator;
-    public PlayerInput Input => input;
-    public Vector2 MoveDir => moveDir;
-    public Rigidbody2D Rigid => rigid;
-    public BoxCollider2D PlayerColl => playercoll;
-    public Box Box { get { return box; } set { box = value; } }
-    public Transform SlingshotAim => slingshotAim;
-    public PhysicsMaterial2D PlayerMaterial => playerMaterial;
-    public PixelPerfectCamera Pixel => pixel;
-    public PlayerSoundManager SFX => sfx;
-
-    public float Accel => accel;
-    public float JumpSpeed => jumpSpeed;
-    public float MoveSpeed => moveSpeed;
-    public float ClimbMoveSpeed => climbMoveSpeed;
-    public float ChargeTime { get { return chargeTime; } set { chargeTime = value; } }
-    public float ThrowPower => throwPower;
-    public float HitPower => hitPower;
-    public float AimSpeed => aimSpeed;
-    public float TakeHitPower { get { return takeHitPower; } set { takeHitPower = value; } }
-    public float Bounciness => bounciness;
-    public float UseStamina => useStamina;
-
-    public bool IsGrounded => isGrounded;
-    public bool IsDucking => isDucking;
-    public bool IsLadder => isLadder;
-    public bool OnNPC => onNPC;
-    public bool OnTalk { get { return onTalk; } set { onTalk = value; } }
-    public bool OnDoor => onDoor;
-    public bool OnEnter => onEnter;
     public bool OnHit { get { return onHit; } set { onHit = value; } }
-    public bool OnCeiling => onCeiling;
 
+    private bool onCeiling; // 머리위에 천장체크
+    public bool OnCeiling { get { return onCeiling; } }
+
+    private Collider2D platformcoll;
+
+    private Box box;
+    public Box Box { get { return box; } set { box = value; } }
+
+    [Header("Event")]
     public UnityEvent OnWakeUp;
     public UnityEvent OnNoramalAttack;
 
@@ -169,29 +208,13 @@ public class Player : MonoBehaviour, IDamagable
         isLadder = ladderCount > 0;
         onCeiling = headCheck.OnCeiling;
 
-        // 숙인 상태면 느려지게
-        if (isDucking)
+        if (input.actions["Run"].IsPressed())
         {
-            moveSpeed = duckMoveSpeed;
-        }
-        // 공격 차지중에는 느려지게
-        else if (input.actions["Attack"].IsPressed())
-        {
-            moveSpeed = ChargerMoveSpeed;
-        }
-        // 물건을 밀거나 끌때는 느려지게
-        else if (input.actions["Grab"].IsPressed() && box != null)
-        {
-            moveSpeed = grabMoveSpeed;
-        }
-        // "Run"키를 누르고 움직이면 달리기
-        else if (input.actions["Run"].IsPressed() && (Manager.Data.Stamina > 0))
-        {
-            moveSpeed = runSpeed;
+            normalSpeed = runSpeed;
         }
         else
         {
-            moveSpeed = walkSpeed;
+            normalSpeed = walkSpeed;
         }
 
         // 차징이 되면 hitPower가 쎄지고 attackRange가 커진다
@@ -208,13 +231,15 @@ public class Player : MonoBehaviour, IDamagable
 
         stateMachine.FixedUpdate();
 
-        // 숏컷 점프 구현
+        // 짧은 점프 구현
         if (rigid.velocity.y < 0)
         {
+            //                                                   multiplier = 2.5f
             rigid.velocity += Vector2.up * Physics2D.gravity.y * multiplier * Time.deltaTime;
         }
         else if (rigid.velocity.y > 0 && !input.actions["Jump"].IsPressed())
         {
+            //                                                   lowJumpMultiplier = 2f
             rigid.velocity += Vector2.up * Physics2D.gravity.y * lowJumpMultiplier * Time.deltaTime;
         }
 
@@ -297,6 +322,7 @@ public class Player : MonoBehaviour, IDamagable
 
     public void IsEnter()
     {
+        Manager.UI.CloseTutorialUI();
         onEnter = true;
     }
 
@@ -348,7 +374,7 @@ public class Player : MonoBehaviour, IDamagable
         Gizmos.DrawWireCube(interactPoint.position, interactBoxSize);
     }
 
-    // 새총외에 쏘는것을 더 만들면 총알들을 스크립터블오브젝트로 만든뒤에 그걸 불러와서 쏘는것을 구현
+    // 새총외에 쏘는것을 더 만들면 그걸 불러와서 쏘는것을 구현
     public void Shot()
     {
         Vector2 shotDir = transform.localScale.x > 0 ? slingshotAim.right : -slingshotAim.right;
@@ -388,14 +414,17 @@ public class Player : MonoBehaviour, IDamagable
         }
         else if (((1 << collision.gameObject.layer) & LadderLayer) != 0)
         {
+            //Manager.UI.ShowTutorialUI(transform, TutorialType.Climb);
             ladderCount++;
         }
         else if (((1 << collision.gameObject.layer) & npcLayer) != 0)
         {
+            Manager.UI.ShowTutorialUI(transform, TutorialType.Talk);
             onNPC = true;
         }
         else if (((1 << collision.gameObject.layer) & doorLayer) != 0)
         {
+            Manager.UI.ShowTutorialUI(transform, TutorialType.Enter);
             onDoor = true;
         }
     }
@@ -408,14 +437,17 @@ public class Player : MonoBehaviour, IDamagable
         }
         else if (((1 << collision.gameObject.layer) & LadderLayer) != 0)
         {
+            //Manager.UI.CloseTutorialUI();
             ladderCount--;
         }
         else if (((1 << collision.gameObject.layer) & npcLayer) != 0)
         {
+            Manager.UI.CloseTutorialUI();
             onNPC = false;
         }
         else if (((1 << collision.gameObject.layer) & doorLayer) != 0)
         {
+            Manager.UI.CloseTutorialUI();
             onDoor = false;
         }
     }

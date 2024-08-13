@@ -3,12 +3,12 @@ using UnityEngine;
 public class GrabState : PlayerState
 {
     float facing; // 바라보는 방향을 저장
-    BoxCollider2D boxColl;
     Vector2 offset;
-    Rigidbody2D boxRigid;
 
     public override void Enter()
     {
+        player.MoveSpeed = player.GrabMoveSpeed;
+
         player.Grab();
         if (player.Box != null)
         {
@@ -17,11 +17,14 @@ public class GrabState : PlayerState
 
             facing = player.transform.localScale.x;
 
-            boxColl = player.Box.gameObject.GetComponent<BoxCollider2D>();
-            boxRigid = player.Box.gameObject.GetComponent<Rigidbody2D>();
-            offset = new Vector2(Mathf.Abs(boxColl.size.x + player.PlayerColl.size.x) * 0.5f, (boxColl.size.y * 0.5f) + 0.01f);
+            float xSize = player.Box.BoxColl.size.x;
+            float ySize = player.Box.BoxColl.size.y;
+
+            offset = new Vector2(Mathf.Abs(xSize + player.PlayerColl.size.x) * 0.53f, (ySize * 0.5f) + 0.01f);
             player.Box.transform.localPosition = offset;
-            boxRigid.gravityScale = 0f;
+
+            player.Box.Rigid.bodyType = RigidbodyType2D.Kinematic;
+            player.Box.Rigid.useFullKinematicContacts = true;
         }
         else
         {
@@ -33,8 +36,6 @@ public class GrabState : PlayerState
     {
         if (player.Box == null)
             return;
-
-        player.Box.transform.localPosition = offset;
 
         // 잡고있는 상태에서 위방향키를 누르고 있으면 들어올린다
         if (player.MoveDir.y > 0.1f)
@@ -51,7 +52,10 @@ public class GrabState : PlayerState
         }
         else if (player.MoveDir.x == 0)
         {
-            player.Animator.Play("Push");
+            if (player.Animator.GetCurrentAnimatorClipInfo(0)[0].clip.name.Equals("Pull"))
+                player.Animator.Play("Pull");
+            else
+                player.Animator.Play("Push");
             player.Animator.speed = 0f;
         }
         // 바라보는 방향과 움직이는 방향이 같으면 밀기 애니메이션
@@ -77,15 +81,10 @@ public class GrabState : PlayerState
     {
         player.Animator.speed = 1f;
 
-        if (player.Box != null)
-            boxRigid.gravityScale = 1f;
-    }
+        if (player.Box == null)
+            return;
 
-    private void Move()
-    {
-        float target = player.MoveDir.x * player.MoveSpeed;
-        float diffSpeed = target - player.Rigid.velocity.x;
-        player.Rigid.AddForce(Vector2.right * diffSpeed * player.Accel);
+        player.Box.Rigid.bodyType = RigidbodyType2D.Dynamic;
     }
 
     public override void Transition()
@@ -98,6 +97,7 @@ public class GrabState : PlayerState
             ChangeState(Player.State.Normal);
             player.Box.transform.parent = null;
             player.Box = null;
+
         }
         else if (!player.IsGrounded)
         {
@@ -107,8 +107,16 @@ public class GrabState : PlayerState
         }
     }
 
-    public GrabState(Player player)
+    protected override void Move()
     {
-        this.player = player;
+        base.Move();
+
+        if (player.Box == null)
+            return;
+
+        //                                                                                       0.02f = fixedDeltaTime
+        player.Box.Rigid.MovePosition(player.Box.transform.position + Vector3.right * player.Rigid.velocity.x * 0.02f);
     }
+
+    public GrabState(Player player) : base(player) { }
 }

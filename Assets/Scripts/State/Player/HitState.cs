@@ -28,8 +28,5 @@ public class HitState : PlayerState
         player.OnHit = false;
     }
 
-    public HitState(Player player)
-    {
-        this.player = player;
-    }
+    public HitState(Player player) : base(player) { }
 }

@@ -82,10 +82,13 @@ public class WorldPlayer : MonoBehaviour
         moveDir = value.Get<Vector2>();
     }
 
+    // 씬을 한번만 로딩하기 위해사용
+    int loadCount = 1;
     private void OnAttack(InputValue value)
     {
-        if (onEntrance && value.isPressed)
+        if (onEntrance && value.isPressed && loadCount > 0)
         {
+            loadCount--;
             OnAttackKeyPress?.Invoke();
         }
     }

@@ -19,4 +19,13 @@ public class BattleScene : BaseScene
     {
         Manager.Scene.LoadScene("WorldScene");
     }
+
+    [SerializeField] bool debug;
+    protected override void Start()
+    {
+        base.Start();
+
+        if (debug)
+            spawner.SpawnMonster();
+    }
 }

@@ -46,5 +46,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHp: 20
   hp: 20
-  maxStamina: 6
-  stamina: 6
+  maxStamina: 20
+  stamina: 20

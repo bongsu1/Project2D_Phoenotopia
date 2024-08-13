@@ -8,6 +8,8 @@ public class TalkState : PlayerState
 
     public override void Enter()
     {
+        Manager.UI.CloseTutorialUI();
+
         player.Talk();
         player.Input.actions["Move"].Disable();
 
@@ -60,8 +62,5 @@ public class TalkState : PlayerState
         player.Pixel.assetsPPU = 140;
     }
 
-    public TalkState(Player player)
-    {
-        this.player = player;
-    }
+    public TalkState(Player player) : base(player) { }
 }

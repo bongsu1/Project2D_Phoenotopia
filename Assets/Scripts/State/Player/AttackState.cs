@@ -45,15 +45,5 @@ public class AttackState : PlayerState
         }
     }
 
-    private void Move()
-    {
-        float target = player.MoveDir.x * player.MoveSpeed;
-        float diffSpeed = target - player.Rigid.velocity.x;
-        player.Rigid.AddForce(Vector2.right * diffSpeed * player.Accel);
-    }
-
-    public AttackState(Player player)
-    {
-        this.player = player;
-    }
+    public AttackState(Player player) : base(player) { }
 }

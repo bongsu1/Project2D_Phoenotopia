@@ -4,6 +4,8 @@ public class DuckState : PlayerState
 {
     public override void Enter()
     {
+        player.MoveSpeed = player.DuckMoveSpeed;
+
         if (Mathf.Abs(player.Rigid.velocity.x) > 2.5f)
         {
             player.Animator.Play("Roll");
@@ -34,11 +36,14 @@ public class DuckState : PlayerState
     {
         player.PlayerColl.offset = new Vector2(0f, 0.4f);
         player.PlayerColl.size = new Vector2(0.45f, 0.8f);
+        player.Animator.speed = 1f;
     }
 
-    private void Move()
+    protected override void Move()
     {
-        // Run 키를 누를 때 대시(구르기) 추가
+        base.Move();
+
+        // Run 키를 누를 때 대시(구르기) 추가예정
         if (Mathf.Abs(player.Rigid.velocity.x) > 2.1f)
         {
             player.Animator.Play("Roll");
@@ -48,9 +53,14 @@ public class DuckState : PlayerState
             player.Animator.Play("DuckMove"); // +움직이고 있지 않을 때 애니메이션 정지
         }
 
-        float target = player.MoveDir.x * player.MoveSpeed;
-        float diffSpeed = target - player.Rigid.velocity.x;
-        player.Rigid.AddForce(Vector2.right * diffSpeed * player.Accel);
+        if (Mathf.Abs(player.Rigid.velocity.x) < 0.01f && player.Animator.GetCurrentAnimatorClipInfo(0)[0].clip.name != "Duck")
+        {
+            player.Animator.speed = 0f;
+        }
+        else
+        {
+            player.Animator.speed = 1f;
+        }
     }
 
     public override void Transition()
@@ -68,8 +78,5 @@ public class DuckState : PlayerState
         }
     }
 
-    public DuckState(Player player)
-    {
-        this.player = player;
-    }
+    public DuckState(Player player) : base(player) { }
 }

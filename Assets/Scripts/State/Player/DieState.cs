@@ -5,8 +5,5 @@ public class DieState : PlayerState
         player.Animator.Play("Knockdown");
     }
 
-    public DieState(Player player)
-    {
-        this.player = player;
-    }
+    public DieState(Player player) : base(player) { }
 }

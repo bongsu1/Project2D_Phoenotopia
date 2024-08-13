@@ -10,8 +10,5 @@ public class ETHitState : ToadState
         toad.Animator.SetFloat("Fall", toad.Rigid.velocity.y);
     }
 
-    public ETHitState(Toad toad)
-    {
-        this.toad = toad;
-    }
+    public ETHitState(Toad toad) : base(toad) { }
 }

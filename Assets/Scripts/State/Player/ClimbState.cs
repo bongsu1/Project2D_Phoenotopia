@@ -4,6 +4,7 @@ public class ClimbState : PlayerState
 {
     public override void Enter()
     {
+        //Manager.UI.CloseTutorialUI();
         Manager.Data.StartStaminaRegenRoutine();
         player.Rigid.gravityScale = 0f;
         player.Animator.Play("Climb");
@@ -32,14 +33,9 @@ public class ClimbState : PlayerState
         player.Rigid.gravityScale = 1f;
     }
 
-    private void Move()
+    protected override void Move()
     {
         player.Rigid.velocity = new Vector2(player.MoveDir.x, player.MoveDir.y).normalized * player.ClimbMoveSpeed;
-    }
-
-    private void Jump()
-    {
-        player.Rigid.velocity = new Vector2(player.Rigid.velocity.x, player.JumpSpeed);
     }
 
     public override void Transition()
@@ -73,8 +69,5 @@ public class ClimbState : PlayerState
         }
     }
 
-    public ClimbState(Player player)
-    {
-        this.player = player;
-    }
+    public ClimbState(Player player) : base(player) { }
 }

@@ -21,6 +21,9 @@ public class NPC : MonoBehaviour, IInteractable
     [SerializeField] TMP_Text talkScript;
     [SerializeField] Vector3 offset;
 
+    [Header("Talk Script")]
+    [SerializeField] string[] scripts;
+
     private Player player;
     private Coroutine talkRoutine;
     private Coroutine idleRoutine;
@@ -131,21 +134,16 @@ public class NPC : MonoBehaviour, IInteractable
     IEnumerator TalkRoutine()
     {
         speechUI.gameObject.SetActive(true);
-        //speechBubble.transform.position = Camera.main.WorldToScreenPoint(transform.position + offset);
         curState = State.Talk;
+        for (int i = 0; i < scripts.Length; i++)
+        {
+            //new WaitUntil(() => player.Input.actions["Attack"].IsPressed() && player.Input.actions["Attack"].triggered);
+            yield return waitUntil;
+            talkScript.text = scripts[i];
+            yield return new WaitForSeconds(.1f);
+        }
         yield return waitUntil;
-        talkScript.text = "Hi";
-        yield return new WaitForSeconds(.1f);
-        yield return waitUntil;
-        talkScript.text = "Jump Key 'Z'\nAttack key 'X'";
-        yield return new WaitForSeconds(.1f);
-        yield return waitUntil;
-        talkScript.text = "Grab key 'D'\nItem Use key 'C'";
-        yield return new WaitForSeconds(.1f);
-        yield return waitUntil;
-        talkScript.text = "Ducking to\nhold'Down Arrow'";
-        yield return new WaitForSeconds(.1f);
-        yield return waitUntil;
+
         talkRoutine = null;
         player.OnTalk = false;
         player = null;

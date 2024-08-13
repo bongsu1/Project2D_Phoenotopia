@@ -408,6 +408,7 @@ MonoBehaviour:
   bgmVolume: 0.15
   sfxVolume: 0.3
   spawner: {fileID: 776789600}
+  debug: 0
 --- !u!4 &190336478
 Transform:
   m_ObjectHideFlags: 0

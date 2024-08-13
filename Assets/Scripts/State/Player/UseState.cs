@@ -81,8 +81,5 @@ public class UseState : PlayerState
         }
     }
 
-    public UseState(Player player)
-    {
-        this.player = player;
-    }
+    public UseState(Player player) : base(player) { }
 }

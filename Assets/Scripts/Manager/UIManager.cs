@@ -8,13 +8,18 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] Canvas popUpCanvas;
     [SerializeField] Canvas windowCanvas;
     [SerializeField] Canvas inGameCanvas;
+    [SerializeField] Canvas hintCanvas;
 
     [SerializeField] Image popUpBlocker;
     [SerializeField] Button inGameBlocker;
 
+    [Header("Tutorial UI")]
+    [SerializeField] TutorialUI tutorialUI;
+
     private Stack<PopUpUI> popUpStack = new Stack<PopUpUI>();
     private float prevTimeScale;
     private InGameUI curInGameUI;
+    private TutorialUI curTutorialUI;
 
     private void Start()
     {
@@ -118,5 +123,29 @@ public class UIManager : Singleton<UIManager>
         inGameBlocker.gameObject.SetActive(false);
         Destroy(curInGameUI.gameObject);
         curInGameUI = null;
+    }
+
+    public TutorialUI ShowTutorialUI(Transform followTarget, TutorialType type)
+    {
+        if (tutorialUI == null)
+            return null;
+
+        if (curTutorialUI == null)
+        {
+            TutorialUI ui = Instantiate(tutorialUI, hintCanvas.transform);
+            curTutorialUI = ui;
+        }
+        curTutorialUI.FollowTarget = followTarget;
+        curTutorialUI.SetTutorial(type);
+        curTutorialUI.gameObject.SetActive(true);
+        return curTutorialUI;
+    }
+
+    public void CloseTutorialUI()
+    {
+        if (curTutorialUI == null)
+            return;
+
+        curTutorialUI.gameObject.SetActive(false);
     }
 }

@@ -18,8 +18,5 @@ public class ETIdleState : ToadState
         }
     }
 
-    public ETIdleState(Toad toad)
-    {
-        this.toad = toad;
-    }
+    public ETIdleState(Toad toad) : base(toad) { }
 }

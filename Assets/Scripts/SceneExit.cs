@@ -20,13 +20,6 @@ public class SceneExit : MonoBehaviour
         {
             OnExit?.Invoke(exitPoint);
             count = 0;
-            StartCoroutine(TriggerRoutine());
         }
-    }
-
-    IEnumerator TriggerRoutine()
-    {
-        yield return new WaitForSeconds(0.5f);
-        count = 1;
     }
 }

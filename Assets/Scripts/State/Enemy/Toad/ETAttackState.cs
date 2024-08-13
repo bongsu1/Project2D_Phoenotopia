@@ -21,8 +21,5 @@ public class ETAttackState : ToadState
         toad.StopAttackRoutine();
     }
 
-    public ETAttackState(Toad toad)
-    {
-        this.toad = toad;
-    }
+    public ETAttackState(Toad toad) : base(toad) { }
 }

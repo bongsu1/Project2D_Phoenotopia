@@ -9,6 +9,8 @@ public class NormalState : PlayerState
 
     public override void Update()
     {
+        player.MoveSpeed = player.NormalSpeed;
+
         if (player.Input.actions["Run"].IsPressed() && player.Input.actions["Run"].triggered)
         {
             Manager.Data.Stamina -= player.UseStamina * 0.5f;
@@ -41,18 +43,6 @@ public class NormalState : PlayerState
         Move();
     }
 
-    private void Move()
-    {
-        float target = player.MoveDir.x * player.MoveSpeed;
-        float diffSpeed = target - player.Rigid.velocity.x;
-        player.Rigid.AddForce(Vector2.right * diffSpeed * player.Accel);
-    }
-
-    private void Jump()
-    {
-        player.Rigid.velocity = new Vector2(player.Rigid.velocity.x, player.JumpSpeed);
-    }
-
     public override void Transition()
     {
         // 공격키를 누르면 AttackState
@@ -72,7 +62,7 @@ public class NormalState : PlayerState
             ChangeState(Player.State.Talk);
         }
         // Use키를 누르면 UseState
-        else if (Manager.Data.Stamina >= player.UseStamina && player.Input.actions["Use"].IsPressed() && player.Input.actions["Use"].triggered)// +아이템을 장착하고 있으면
+        else if (Manager.Data.Stamina >= player.UseStamina && player.Input.actions["Use"].IsPressed() && player.Input.actions["Use"].triggered)// (+아이템을 장착하고 있으면, 아이템이 구현되었을때 추가)
         {
             ChangeState(Player.State.Use);
         }
@@ -107,8 +97,5 @@ public class NormalState : PlayerState
         }
     }
 
-    public NormalState(Player player)
-    {
-        this.player = player;
-    }
+    public NormalState(Player player) : base(player) { }
 }

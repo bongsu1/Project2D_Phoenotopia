@@ -2,23 +2,21 @@ using UnityEngine;
 
 public class CarryState : PlayerState
 {
-    BoxCollider2D boxColl;
+    Vector2 boxSize;
     Vector2 offset;
-    SpriteRenderer boxRender;
-    Rigidbody2D boxRigid;
 
     int pressCount; // 던지기나 놓기 키를 누르면 스테이트 변경
 
     public override void Enter()
     {
-        boxRigid = player.Box.gameObject.GetComponent<Rigidbody2D>();
-        boxRigid.mass = 0f;
+        player.MoveSpeed = player.NormalSpeed;
 
-        boxColl = player.Box.gameObject.GetComponent<BoxCollider2D>();
-        offset = new Vector2(0f, player.PlayerColl.size.y + (boxColl.size.y / 3));
+        player.Box.Rigid.mass = 0f;
 
-        boxRender = player.Box.gameObject.GetComponent<SpriteRenderer>();
-        boxRender.sortingOrder = 6;
+        boxSize = player.Box.BoxColl.size;
+        offset = new Vector2(0f, player.PlayerColl.size.y + (boxSize.y / 3));
+
+        player.Box.SpriteRender.sortingOrder = 6;
 
         player.Box.transform.localPosition = offset; // 나중에 자연스럽게 바꾸기
 
@@ -58,7 +56,7 @@ public class CarryState : PlayerState
         if (player.IsGrounded && player.Input.actions["Grab"].IsPressed() && player.Input.actions["Grab"].triggered)
         {
 
-            offset = new Vector2(Mathf.Abs(boxColl.size.x + player.PlayerColl.size.x) * 0.5f, (boxColl.size.y * 0.5f) + 0.01f);
+            offset = new Vector2(Mathf.Abs(boxSize.x + player.PlayerColl.size.x) * 0.5f, (boxSize.y * 0.5f) + 0.01f);
             player.Animator.Play("BoxDown");
             pressCount--;
         }
@@ -67,9 +65,10 @@ public class CarryState : PlayerState
 
         if (player.Input.actions["Attack"].IsPressed() && player.Input.actions["Attack"].triggered)
         {
-            boxRigid.mass = 5f;
+            player.Box.Rigid.mass = 5f;
             player.Box.transform.parent = null;
-            boxRigid.velocity = new Vector2(player.transform.localScale.x * player.ThrowPower * 2, player.ThrowPower);
+            player.Box.Rigid.velocity = 
+                new Vector2(player.transform.localScale.x * player.ThrowPower * 2f, player.ThrowPower);
             player.Animator.Play("BoxThrow");
             pressCount--;
         }
@@ -82,26 +81,11 @@ public class CarryState : PlayerState
 
     public override void Exit()
     {
-        boxRigid.mass = 5f;
-        boxRender.sortingOrder = 2;
+        player.Box.Rigid.mass = 5f;
+        player.Box.SpriteRender.sortingOrder = 2;
         player.Box.transform.parent = null;
         player.Box = null;
     }
 
-    private void Move()
-    {
-        float target = player.MoveDir.x * player.MoveSpeed;
-        float diffSpeed = target - player.Rigid.velocity.x;
-        player.Rigid.AddForce(Vector2.right * diffSpeed * player.Accel);
-    }
-
-    private void Jump()
-    {
-        player.Rigid.velocity = new Vector2(player.Rigid.velocity.x, player.JumpSpeed);
-    }
-
-    public CarryState(Player player)
-    {
-        this.player = player;
-    }
+    public CarryState(Player player) : base(player) { }
 }

@@ -435,7 +435,7 @@ MonoBehaviour:
   jumpSpeed: 6
   duckMoveSpeed: 2
   climbMoveSpeed: 2
-  ChargerMoveSpeed: 2
+  chargedMoveSpeed: 2
   grabMoveSpeed: 2
   normalAttackRange: 0.4
   chargeAttackRange: 0.45

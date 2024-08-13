@@ -6,6 +6,8 @@ public class ChargeState : PlayerState
 
     public override void Enter()
     {
+        player.MoveSpeed = player.ChargedMoveSpeed;
+
         player.Animator.Play("Charging");
     }
 
@@ -72,13 +74,6 @@ public class ChargeState : PlayerState
         player.Input.actions["Attack"].Enable();
     }
 
-    private void Move()
-    {
-        float target = player.MoveDir.x * player.MoveSpeed;
-        float diffSpeed = target - player.Rigid.velocity.x;
-        player.Rigid.AddForce(Vector2.right * diffSpeed * player.Accel);
-    }
-
     public override void Transition()
     {
         if (!player.IsGrounded)
@@ -92,8 +87,5 @@ public class ChargeState : PlayerState
         }
     }
 
-    public ChargeState(Player player)
-    {
-        this.player = player;
-    }
+    public ChargeState(Player player) : base(player) { }
 }

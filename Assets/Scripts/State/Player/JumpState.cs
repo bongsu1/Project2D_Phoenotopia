@@ -24,7 +24,7 @@ public class JumpState : PlayerState
 
         if (player.Input.actions["Run"].IsPressed() && player.Input.actions["Run"].triggered)
         {
-            Manager.Data.Stamina -= player.UseStamina;
+            //Manager.Data.Stamina -= followTarget.UseStamina;
             Manager.Data.StopStaminaRegenRoutine();
         }
         else if (player.Input.actions["Run"].IsPressed() && player.Rigid.velocity.magnitude > 0.01f)
@@ -44,13 +44,6 @@ public class JumpState : PlayerState
         Move();
     }
 
-    private void Move()
-    {
-        float target = player.MoveDir.x * player.MoveSpeed;
-        float diffSpeed = target - player.Rigid.velocity.x;
-        player.Rigid.AddForce(Vector2.right * diffSpeed * player.Accel);
-    }
-
     public override void Transition()
     {
         if (Manager.Data.Stamina >= player.UseStamina && player.Input.actions["Attack"].IsPressed() && player.Input.actions["Attack"].triggered)
@@ -68,8 +61,5 @@ public class JumpState : PlayerState
         }
     }
 
-    public JumpState(Player player)
-    {
-        this.player = player;
-    }
+    public JumpState(Player player) : base(player) { }
 }

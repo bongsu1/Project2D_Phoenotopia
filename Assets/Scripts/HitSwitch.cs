@@ -20,17 +20,9 @@ public class HitSwitch : MonoBehaviour, IDamagable
         animator.SetTrigger("Hit");
     }
 
-    public void OnSwitchngSet(string value)
+    public void FinishSwitchingAnimation()
     {
-        switch (value)
-        {
-            case "true":
-                onSwitching = true;
-                break;
-            case "false":
-                onSwitching = false;
-                break;
-        }
+        onSwitching = false;
     }
 
     public void SwitchOn()

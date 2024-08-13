@@ -9,6 +9,5 @@ public class PlayerSoundManager : MonoBehaviour
     public void PlaySFX(SFX sfx)
     {
         Manager.Sound.PlaySFX(audioClips[(int)sfx]);
-        Debug.Log(sfx);
     }
 }

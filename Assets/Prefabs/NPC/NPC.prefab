@@ -313,6 +313,12 @@ MonoBehaviour:
   speechBubble: {fileID: 7464790068435004527}
   talkScript: {fileID: 7777466874524913809}
   offset: {x: 0, y: 2, z: 0}
+  scripts:
+  - Hi
+  - Jump Key 'Z'
+  - Attack key 'X'
+  - Grab key 'D'
+  - Item Use key 'C'
 --- !u!1 &4896463973981141811
 GameObject:
   m_ObjectHideFlags: 0
