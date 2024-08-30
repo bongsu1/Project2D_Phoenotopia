@@ -1,3 +1,4 @@
+using Cinemachine;
 using UnityEngine;
 
 public class BackGroundMover : MonoBehaviour
@@ -16,7 +17,7 @@ public class BackGroundMover : MonoBehaviour
 
         for (int i = 0; i < backGrounds.Length; i++)
         {
-            backGrounds[i].Translate(Vector2.right * -player.velocity.x * moveSpeed * Time.deltaTime);
+            backGrounds[i].Translate(Vector2.right * -player.velocity.x * moveSpeed * 0.02f);
             if (backGrounds[i].localPosition.x > xOffSet)
             {
                 backGrounds[i].localPosition = new Vector2(-xOffSet, backGrounds[i].localPosition.y);

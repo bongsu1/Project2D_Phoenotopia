@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    public void Test()
+    private void Start()
     {
-        Debug.Log(GetInstanceID());
+        Application.targetFrameRate = 60;
     }
 }

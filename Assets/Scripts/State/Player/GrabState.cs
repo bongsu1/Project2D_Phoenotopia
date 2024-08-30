@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GrabState : PlayerState
@@ -20,11 +21,12 @@ public class GrabState : PlayerState
             float xSize = player.Box.BoxColl.size.x;
             float ySize = player.Box.BoxColl.size.y;
 
-            offset = new Vector2(Mathf.Abs(xSize + player.PlayerColl.size.x) * 0.53f, (ySize * 0.5f) + 0.01f);
+            offset = new Vector2(Mathf.Abs(xSize + player.PlayerColl.size.x) * 0.5f, (ySize * 0.5f) + 0.0078125f);
             player.Box.transform.localPosition = offset;
 
             player.Box.Rigid.bodyType = RigidbodyType2D.Kinematic;
             player.Box.Rigid.useFullKinematicContacts = true;
+            Physics2D.IgnoreCollision(player.Box.BoxColl, player.PlayerColl);
         }
         else
         {
@@ -85,6 +87,7 @@ public class GrabState : PlayerState
             return;
 
         player.Box.Rigid.bodyType = RigidbodyType2D.Dynamic;
+        Physics2D.IgnoreCollision(player.Box.BoxColl, player.PlayerColl, false);
     }
 
     public override void Transition()
