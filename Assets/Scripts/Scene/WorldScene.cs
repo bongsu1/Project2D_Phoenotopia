@@ -23,8 +23,19 @@ public class WorldScene : BaseScene
 
     public void TownSceneLoad()
     {
-        Manager.Scene.LoadScene("TownScene");
-        spawner.StopSpawnRotine();
+        switch (exitPoint)
+        {
+            case 1: // 1 ~ 2 마을
+            case 2:
+                Manager.Scene.LoadScene("TownScene");
+                spawner.StopSpawnRotine();
+                break;
+            case 3: // 보스
+                Manager.Scene.LoadScene("BossScene");
+                spawner.StopSpawnRotine();
+                break;
+
+        }
     }
 
     public void BattleSceneLoad(Vector2 enemyPosition)

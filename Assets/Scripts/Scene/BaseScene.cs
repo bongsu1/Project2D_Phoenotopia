@@ -22,7 +22,10 @@ public abstract class BaseScene : MonoBehaviour
 
     protected virtual void Awake()
     {
-        input = GetComponent<PlayerInput>();
+        if (input == null)
+        {
+            input = GetComponent<PlayerInput>();
+        }
         escapeMenu = Manager.Resource.Load<EscapeMenuUI>($"UI/{typeof(EscapeMenuUI).Name}");
     }
 
