@@ -108,6 +108,8 @@ public class EscapeMenuUI : PopUpUI
                     Close();
                 }
                 break;
+            default:
+                break;
         }
     }
 

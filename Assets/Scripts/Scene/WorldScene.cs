@@ -34,7 +34,8 @@ public class WorldScene : BaseScene
                 Manager.Scene.LoadScene("BossScene");
                 spawner.StopSpawnRotine();
                 break;
-
+            default:
+                break;
         }
     }
 

@@ -16,6 +16,9 @@ public class Boss : MonoBehaviour, IDamagable
     [SerializeField] float attackRange;
     public float AttackRange { get { return attackRange; } }
 
+    [SerializeField] Vector3 attackOffset;
+    public Vector3 AttackOffset { get { return attackOffset; } }
+
     [Header("Component")]
     [SerializeField] Rigidbody2D rigid;
     public Rigidbody2D Rigid { get { return rigid; } }
@@ -24,6 +27,10 @@ public class Boss : MonoBehaviour, IDamagable
     public Collider2D Coll { get { return coll; } }
 
     [SerializeField] Animator anim;
+    public Animator Anim { get { return anim; } }
+
+    [SerializeField] SpriteRenderer render;
+    public SpriteRenderer Render { get { return render; } }
 
     [Header("player")]
     [SerializeField] Player player;
@@ -63,6 +70,7 @@ public class Boss : MonoBehaviour, IDamagable
         if (hp <= 0)
         {
             stateMachine.ChangeState(State.Die);
+            anim.SetTrigger("Die");
         }
     }
 
@@ -86,10 +94,16 @@ public class Boss : MonoBehaviour, IDamagable
         }
     }
 
+    // 죽는 애니메이션이 끝나고 동작하도록 애니메이션 이벤트에 등록
+    public void Die()
+    {
+        Destroy(this.gameObject);
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
+        Gizmos.DrawWireSphere(transform.position + attackOffset, attackRange);
     }
 }
 
@@ -114,6 +128,11 @@ public class B_IdleState : BossState
         waitRoutine = boss.StartCoroutine(WaitRoutine());
     }
 
+    public override void Update()
+    {
+        boss.Render.flipX = 0 > (boss.transform.position.x - boss.Player.transform.position.x);
+    }
+
     public override void Exit()
     {
         if (waitRoutine != null)
@@ -134,7 +153,7 @@ public class B_IdleState : BossState
 
 public class B_AttackState : BossState
 {
-    WaitForSeconds waitAttack = new WaitForSeconds(1f);
+    WaitForSeconds waitAttack = new WaitForSeconds(.5f);
     Coroutine attackRoutine;
 
     public override void Enter()
@@ -160,7 +179,10 @@ public class B_AttackState : BossState
     IEnumerator JumpAttack()
     {
         Jump(boss.Player.transform.position);
+        boss.Anim.SetTrigger("Jump");
         yield return waitAttack;
+        yield return waitAttack;
+        Physics2D.IgnoreCollision(boss.Coll, boss.Player.PlayerColl);
         boss.Rigid.velocity = Vector2.zero;
         attackRoutine = null;
         ChangeState(Boss.State.Idle);
@@ -168,6 +190,8 @@ public class B_AttackState : BossState
 
     IEnumerator AllRoundAttack()
     {
+        boss.Anim.SetTrigger("RoundAttack");
+        yield return waitAttack;
         RoundAttack();
         yield return waitAttack;
         attackRoutine = null;
@@ -184,15 +208,18 @@ public class B_AttackState : BossState
     Collider2D[] collider = new Collider2D[10];
     private void RoundAttack()
     {
-        int size = Physics2D.OverlapCircleNonAlloc(boss.transform.position, boss.AttackRange,
+        int size = Physics2D.OverlapCircleNonAlloc(boss.transform.position + boss.AttackOffset, boss.AttackRange,
             collider, boss.PlayerLayer);
         if (size >= 1)
         {
-            IDamagable damagable = collider[1].GetComponent<IDamagable>();
-            if (damagable != null)
+            for (int i = 0; i < size; i++)
             {
-                damagable.TakeDamage(boss.AttackDamage);
-                damagable.Knockback(boss.transform.position, 1f);
+                IDamagable damagable = collider[i].GetComponent<IDamagable>();
+                if (damagable != null)
+                {
+                    damagable.TakeDamage(boss.AttackDamage);
+                    damagable.Knockback(boss.transform.position, 1f);
+                }
             }
         }
     }

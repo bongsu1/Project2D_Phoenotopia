@@ -59,6 +59,8 @@ public class NPC : MonoBehaviour, IInteractable
                 break;
             case State.Action:
                 break;
+            default:
+                break;
         }
     }
 

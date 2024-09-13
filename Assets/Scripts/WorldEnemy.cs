@@ -75,6 +75,8 @@ public class WorldEnemy : MonoBehaviour
             case Patrol.Width:
                 rigid.velocity = Vector2.right * direction * moveSpeed;
                 break;
+            default:
+                break;
         }
     }
 
